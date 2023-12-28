@@ -18,43 +18,7 @@ export const BoardHeader = () => {
     backgroundColor: 'inherit',
     border: 'none',
     padding: 2,
-    borderRadius: 4,
-    '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.12)',
-      color: 'white'
-    },
-    '&:active': {
-      backgroundColor: 'rgba(0,0,0,0.16)',
-      color: 'white'
-    },
-    '&:focus': {
-      backgroundColor: 'rgba(0,0,0,0.12)',
-      color: 'white'
-    },
-    '&:focus-visible': {
-      backgroundColor: 'rgba(0,0,0,0.12)',
-      color: 'white'
-    },
-    '&:disabled': {
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      color: 'rgba(0,0,0,0.26)'
-    },
-    '&:disabled:hover': {
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      color: 'rgba(0,0,0,0.26)'
-    },
-    '&:disabled:active': {
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      color: 'rgba(0,0,0,0.26)'
-    },
-    '&:disabled:focus': {
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      color: 'rgba(0,0,0,0.26)'
-    },
-    '&:disabled:focus-visible': {
-      backgroundColor: 'rgba(0,0,0,0.08)',
-      color: 'rgba(0,0,0,0.26)'
-    }
+    borderRadius: 4
   }
   return (
     <Box sx={{
@@ -71,7 +35,20 @@ export const BoardHeader = () => {
           <Chip sx={styled} icon={<FilterAltIcon />} label="Filter" variant="outlined" clickable/>
         </Box>
         <Button startIcon={<GroupAddIcon />} variant="contained" sx={{ marginX:4 }}>Invite</Button>
-        <AvatarGroup max={6}>
+        <AvatarGroup max={6} sx={{
+          '& .MuiAvatar-root': {
+            width: 32,
+            height: 32,
+            border: 'none',
+            fontSize: '0.8rem',
+            cursor: 'pointer',
+            '&:hover': {
+              border: '2px solid white',
+              zIndex: 1
+            }
+          }
+
+        }}>
           <Tooltip>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
           </Tooltip>
