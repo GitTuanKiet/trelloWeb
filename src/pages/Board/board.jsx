@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container'
-import { BoardContent } from './boardcontent'
-import { BoardHeader } from './boardheader'
+import { BoardContent } from './BoardContent'
+import { BoardHeader } from './BoardHeader'
 import { AppHeader } from '@/components/AppHeader'
 import { mockData } from '@/apis/mock-data'
 
