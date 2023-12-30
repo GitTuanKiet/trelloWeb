@@ -8,58 +8,34 @@ import CommentIcon from '@mui/icons-material/Comment'
 import ShareIcon from '@mui/icons-material/Share'
 import { Typography } from '@mui/material'
 
-const Card = ({ bool }) => {
-  if (bool) {
-    return (
-      <MuiCard sx={{
-        minwidth: '100%',
-        minHeight:'auto',
-        cursor:'pointer',
-        overflow:'unset',
-        boxShadow:'0 0 0 1px rgba(9,30,66,.25)',
-        '& .MuiCardContent-root:last-child': {
-          paddingBottom:1
-        },
-        '& .MuiCardContent-root': {
-          padding: 1
-        } }}>
-        <CardContent>
-          <Typography>
-                    Card khac
-          </Typography>
-        </CardContent>
-      </MuiCard>
-    )
-  }
+const Card = ({ card }) => {
+  const isShowActions = () => (card?.memberIds?.length || card?.comments?.length || card?.attachments?.length) ? true : false
   return (
     <MuiCard sx={{
       minwidth: '100%',
-      minHeight:'auto',
       overflow:'unset',
       cursor:'pointer',
-      '& .MuiCardContent-root': {
-        padding: 1
-      },
       boxShadow:'0 0 0 1px rgba(9,30,66,.25)',
       '& .MuiCardContent-root:last-child': {
-        paddingBottom:1
-      } }}>
-      <CardMedia
+        paddingBottom: '0 !important'
+      }
+    }}>
+      {card?.cover && <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-      />
-      <CardContent>
+        image={card.cover}
+      />}
+      <CardContent sx={{ p:0 }}>
         <Typography>
-            Card tuankiet trello
+          {card?.title}
         </Typography>
       </CardContent>
-      <CardActions sx={{ gap:1 }}>
-        <Button startIcon={<ThumbUpIcon />} size="small">20</Button>
-        <Button startIcon={<CommentIcon />} size="small">21</Button>
-        <Button startIcon={<ShareIcon />} size="small">22</Button>
-      </CardActions>
+      {isShowActions() && <CardActions sx={{ gap:1 }}>
+        {!!card?.memberIds?.length && <Button startIcon={<ThumbUpIcon />} size="small">{card.memberIds.length}</Button>}
+        {!!card?.comments?.length && <Button startIcon={<CommentIcon />} size="small">{card.comments.length}</Button>}
+        {!!card?.attachments?.length && <Button startIcon={<ShareIcon />} size="small">{card.attachments.length}</Button>}
+      </CardActions>}
     </MuiCard>
   )
 }

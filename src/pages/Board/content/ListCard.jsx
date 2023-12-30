@@ -1,10 +1,13 @@
 import Box from '@mui/material/Box'
-import Card from './card'
+import Card from './Card'
+import { useState } from 'react'
+import { sortArray } from '@/utils/sorts'
 
-const ListCards = () => {
+const ListCard = ({ column }) => {
+  const [cards, setCards] = useState(sortArray(column?.cards, column?.cardOrderIds, '_id'))
   return (
     <Box sx={{
-      p:'0 5px',
+      p:'1px 5px 1px',
       m:'0 5px',
       display: 'flex',
       flexDirection: 'column',
@@ -44,18 +47,13 @@ const ListCards = () => {
       }
     }}>
       {/* card */}
-      <Card />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
-      <Card bool={true} />
+      {cards?.map((card) => {
+        return (
+          <Card key={card._id} card={card} />
+        )
+      })}
     </Box>
   )
 }
 
-export default ListCards
+export default ListCard
