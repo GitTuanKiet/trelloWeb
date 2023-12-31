@@ -9,10 +9,10 @@ const theme = extendTheme({
     boardContentHeight: 'calc(100vh - 128px)',
     columns: {
       width: '333px',
-      height: 'calc(100vh - 128px - 64px)',
-      heightheader: '50px',
-      heightfooter: '50px',
-      heightcontent: 'calc(100vh - 128px - 64px - 100px)'
+      height: 'calc(100vh - 128px - 24px)',
+      heightheader: '64px',
+      heightfooter: '56px',
+      heightcontent: 'calc(100vh - 128px - 24px - 134px)'
     }
   },
   components: {
@@ -42,7 +42,12 @@ const theme = extendTheme({
         root: {
           textTransform: 'none',
           fontSize: '1.25rem',
-          fontWeight:'100'
+          fontWeight:'bold',
+          border:'none',
+          '&:hover': {
+            border:'none',
+            backgroundColor: 'transparent'
+          }
         }
       }
     }
@@ -51,14 +56,14 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: amber,
-        divider: amber[200],
+        divider: amber[300],
         text: {
           primary: grey[900],
           secondary: grey[800]
         },
         background: {
           default: grey[100],
-          paper: grey[100]
+          paper: grey[200]
         },
         action: {
           active: grey[900],
@@ -75,14 +80,14 @@ const theme = extendTheme({
         divider: deepOrange[700],
         background: {
           default: deepOrange[900],
-          paper: deepOrange[900]
+          paper: deepOrange[800]
         },
         text: {
-          primary: '#fff',
+          primary: grey[400],
           secondary: grey[500]
         },
         action: {
-          active: '#fff',
+          active: deepOrange[800],
           hover: deepOrange[900],
           selected: deepOrange[900],
           disabled: deepOrange[900],

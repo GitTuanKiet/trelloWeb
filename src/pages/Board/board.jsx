@@ -1,8 +1,8 @@
 import Container from '@mui/material/Container'
 import { BoardContent } from './BoardContent'
 import { BoardHeader } from './BoardHeader'
-import { AppHeader } from '@/components/AppHeader'
-import { mockData } from '@/apis/mock-data'
+import { AppHeader } from '../../components/AppHeader'
+import { mockData } from '../../apis/mock-data'
 
 export const Board = () => {
   return (

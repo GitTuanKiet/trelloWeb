@@ -9,9 +9,17 @@ const SearchInput = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25)
   },
+  'input': {
+    '&::placeholder': {
+      color: 'text.primary',
+      opacity: 1
+    }
+  },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
+  minWidth: '150px',
+  border: '1px solid ' + theme.palette.text.primary,
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
     width: 'auto'

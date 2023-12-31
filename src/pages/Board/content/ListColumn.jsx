@@ -9,12 +9,11 @@ const ListColumn = ({ columns }) => {
     <SortableContext items={columns?.map(column => column._id)} strategy={horizontalListSortingStrategy}>
       <Box sx={{
         display: 'flex',
-        alignItems: 'flex-start',
+        width : '100%',
+        height: '100%',
         overflowX:'auto',
         overflowY:'hidden',
         bgcolor: 'inherit',
-        cursor: 'pointer',
-        gap: 2,
         '&::-webkit-scrollbar-track': {
           mx: 2,
           borderRadius: 4,
@@ -22,32 +21,29 @@ const ListColumn = ({ columns }) => {
         }
       }}>
         {/* column */}
-        {columns?.map((column) => {
-          return (
-            <Column key={column._id} column={column} />
-          )
-        })}
-
+        {columns?.map((column) => ( <Column key={column._id} column={column} /> ))}
         {/* add new column */}
-        <Box sx={{
-          minWidth: (theme) => (theme.trello.columns.width),
-          maxWidth: (theme) => (theme.trello.columns.width),
-          maxHeight: (theme) => (theme.trello.columns.height),
-          padding: 1,
-          borderRadius: 4,
-          height: 'fit-content',
-          bgcolor: 'divider',
-          display:'flex',
-          alignItems:'center',
-          justifyContent:'center'
-        }}>
-          <Button
-            startIcon={<AddBoxIcon />}
-            sx={{ color:'white', fontWeight:'bold', fontSize:'1.2rem', borderRadius:4 }}
-          >
+        <Button
+          startIcon={<AddBoxIcon />}
+          variant="contained"
+          sx={{
+            minWidth: (theme) => (theme.trello.columns.width),
+            maxWidth: (theme) => (theme.trello.columns.width),
+            maxHeight: (theme) => (theme.trello.columns.height),
+            padding: 1,
+            borderRadius: 2,
+            height: 'fit-content',
+            bgcolor: 'divider',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            margin:'8px 0px 0px 16px',
+            color:'text.primary',
+            fontWeight:'bold',
+            fontSize:'1.2rem'
+          }}>
           Add new column
-          </Button>
-        </Box>
+        </Button>
       </Box>
     </SortableContext>
   )
