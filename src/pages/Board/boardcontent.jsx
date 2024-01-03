@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import ListColumn from './content/listColumn'
+import ListColumn from './content/ListColumn'
 import Card from './content/card'
 import Column from './content/column'
 import { genereatePlaceholder } from '~/utils/formatters'
