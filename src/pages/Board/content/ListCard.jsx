@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import Card from './Card'
+import Card from './card'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 const ListCard = ({ cards }) => {

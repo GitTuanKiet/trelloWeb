@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import Column from './Column'
+import Column from './column'
 import Button from '@mui/material/Button'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 import InputBase from '@mui/material/InputBase'

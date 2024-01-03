@@ -6,14 +6,14 @@ import IconButton from '@mui/material/IconButton'
 import Badge from '@mui/material/Badge'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import Search from './Menus/Search'
-import Mode from './Menus/Mode'
-import Profiles from './Menus/Profile'
+import Search from './Menus/search'
+import Mode from './Menus/mode'
+import Profiles from './Menus/profile'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useState } from 'react'
-import ListBoard from './Menus/ListBoard'
+import ListBoard from './Menus/listBoard'
 
 export const AppHeader = () => {
   const pages = ['Home', 'Boards', 'Templates', 'Workspace', 'Apps', 'Settings']
