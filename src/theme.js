@@ -1,5 +1,5 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
-import { amber, deepOrange, grey } from '@mui/material/colors'
+import { amber, pink, grey } from '@mui/material/colors'
 
 
 const theme = extendTheme({
@@ -76,22 +76,22 @@ const theme = extendTheme({
     },
     dark: {
       palette: {
-        primary: deepOrange,
-        divider: deepOrange[700],
+        primary: pink,
+        divider: pink[400],
         background: {
-          default: deepOrange[900],
-          paper: deepOrange[800]
+          default: pink[900],
+          paper: pink[800]
         },
         text: {
-          primary: grey[400],
-          secondary: grey[500]
+          primary: grey[50],
+          secondary: grey[100]
         },
         action: {
-          active: deepOrange[800],
-          hover: deepOrange[900],
-          selected: deepOrange[900],
-          disabled: deepOrange[900],
-          disabledBackground: deepOrange[900]
+          active: pink[800],
+          hover: pink[900],
+          selected: pink[900],
+          disabled: pink[900],
+          disabledBackground: pink[900]
         }
       }
     }

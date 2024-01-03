@@ -24,7 +24,7 @@ const Profiles = () => {
     setAuth(auth => !auth)
   }
   return (
-    <>
+    <div>
       {auth ?
         <IconButton
           onClick={handleClick}
@@ -78,12 +78,12 @@ const Profiles = () => {
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add another account
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
@@ -97,7 +97,7 @@ const Profiles = () => {
           Logout
         </MenuItem>
       </Menu>
-    </>
+    </div>
   )
 }
 

@@ -2,14 +2,14 @@ import Box from '@mui/material/Box'
 import ListColumn from './content/ListColumn'
 import Card from './content/Card'
 import Column from './content/Column'
-import { genereatePlaceholder } from '../../utils/formatters'
+import { genereatePlaceholder } from '~/utils/formatters'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { cloneDeep, isEmpty } from 'lodash'
-import { sortArray } from '../../utils/sorts'
 import { arrayMove } from '@dnd-kit/sortable'
-import { DndContext, DragOverlay, MouseSensor, TouchSensor, defaultDropAnimationSideEffects, useSensor, useSensors, closestCorners, pointerWithin, getFirstCollision } from '@dnd-kit/core'
+import { MouseSensor, TouchSensor } from '~/custom/Libs/dndKitSensors'
+import { DndContext, DragOverlay, defaultDropAnimationSideEffects, useSensor, useSensors, closestCorners, pointerWithin, getFirstCollision } from '@dnd-kit/core'
 
-export const BoardContent = ({ board }) => {
+export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, setMoveCardWithinColumn, setMoveCardWithoutColumn, deleteColumn }) => {
   const [columns, setColumns] = useState([])
   const [type, setType] = useState(null)
   const [data, setData] = useState(null)
@@ -19,7 +19,7 @@ export const BoardContent = ({ board }) => {
   const lastOverId = useRef(null)
 
   useEffect(() => {
-    setColumns(sortArray(board?.columns, board?.columnOrderIds, '_id'))
+    setColumns(board.columns)
   }, [board])
 
   const findColumnWithCardId = (cardId) => {
@@ -38,6 +38,7 @@ export const BoardContent = ({ board }) => {
   }
 
   const handleDragOver = (event) => {
+
     if (type === 'column') return
     if (!event.active || !event.over) return
 
@@ -51,44 +52,66 @@ export const BoardContent = ({ board }) => {
     if (!activeColumn || !overColumn) return
 
     if (activeColumn._id !== overColumn._id) {
-      setDraggedCardToNewColumn(overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn)
+      setDraggedCardToNewColumn(overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn, 'over')
     }
   }
 
   const handleDragEnd = (event) => {
+
     if (!event.active || !event.over) return
+
     const { active, over } = event
-    if (active.id !== over.id) {
-      if (type === 'card') {
-        const { id: activeDraggingCardId, data: { current: activeDraggingCard } } = active
-        const { id: overCardId } = over
 
-        const activeColumn = findColumnWithCardId(activeDraggingCardId)
-        const overColumn = findColumnWithCardId(overCardId)
+    if (type === 'card') {
 
-        if (!activeColumn || !overColumn || !oldColumn) return
+      const { id: activeDraggingCardId, data: { current: activeDraggingCard } } = active
+      const { id: overCardId } = over
 
-        if (oldColumn._id === overColumn._id) {
-          const oldCardIndex = oldColumn?.cards?.findIndex((card) => card._id === id)
-          const newCardIndex = overColumn?.cards?.findIndex((card) => card._id === overCardId)
-          setColumns(prevColumns => {
-            const newColumns = cloneDeep(prevColumns)
-            const targetColumn = newColumns.find(column => column._id === overColumn._id)
-            if (targetColumn) {
-              targetColumn.cards = arrayMove(oldColumn?.cards, oldCardIndex, newCardIndex)
-              targetColumn.cardOrderIds = arrayMove(oldColumn?.cards, oldCardIndex, newCardIndex).map(card => card._id)
-            }
-            return newColumns
-          })
-        } else {
-          setDraggedCardToNewColumn(overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn)
-        }
-      } else if (type === 'column') {
+      const activeColumn = findColumnWithCardId(activeDraggingCardId)
+      const overColumn = findColumnWithCardId(overCardId)
+
+      if (!activeColumn || !overColumn || !oldColumn) return
+
+      if (oldColumn._id === overColumn._id) {
+
+        const oldCardIndex = oldColumn?.cards?.findIndex((card) => card._id === id)
+        const newCardIndex = overColumn?.cards?.findIndex((card) => card._id === overCardId)
+
+        const orderedCards = arrayMove(oldColumn?.cards, oldCardIndex, newCardIndex)
+        const newCardOrderIds = orderedCards.map(card => card._id)
+
+        setColumns(prevColumns => {
+          const newColumns = cloneDeep(prevColumns)
+          const targetColumn = newColumns.find(column => column._id === overColumn._id)
+          if (targetColumn) {
+            targetColumn.cards = orderedCards
+            targetColumn.cardOrderIds = newCardOrderIds
+          }
+          return newColumns
+        })
+
+        setMoveCardWithinColumn(newCardOrderIds, orderedCards, oldColumn._id)
+
+      } else {
+
+        setDraggedCardToNewColumn(overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn, 'end')
+
+      }
+    } else if (type === 'column') {
+
+      if ( over !== active ) {
+
         const oldColumnIndex = columns.findIndex(column => column._id === active.id)
         const newColumnIndex = columns.findIndex(column => column._id === over.id)
-        setColumns(arrayMove(columns, oldColumnIndex, newColumnIndex))
+
+        const orderedColumns = arrayMove(columns, oldColumnIndex, newColumnIndex)
+        setColumns(orderedColumns)
+
+        const newColumnOrderIds = orderedColumns.map(column => column._id)
+        setMoveColumn(newColumnOrderIds, orderedColumns)
       }
     }
+
     return resetState()
   }
 
@@ -99,7 +122,7 @@ export const BoardContent = ({ board }) => {
     setOldColumn(null)
   }
 
-  const setDraggedCardToNewColumn = (overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn) => {
+  const setDraggedCardToNewColumn = (overColumn, activeDraggingCardId, overCardId, activeDraggingCard, active, over, activeColumn, trigger) => {
     setColumns(prevColumns => {
       const overCardIndex = overColumn?.cards?.findIndex((card) => card._id === overCardId)
 
@@ -132,6 +155,8 @@ export const BoardContent = ({ board }) => {
 
         newOverColumn.cardOrderIds = newOverColumn.cards.map(card => card._id)
       }
+
+      if (trigger === 'end') setMoveCardWithoutColumn(newColumns, activeDraggingCardId, oldColumn._id, overColumn._id)
 
       return newColumns
     })
@@ -187,7 +212,7 @@ export const BoardContent = ({ board }) => {
         height: (theme) => (theme.trello.boardContentHeight),
         bgcolor: 'background.default'
       }}>
-        <ListColumn key={board._id} columns={columns}/>
+        <ListColumn key={board?._id} columns={columns} addNewColumn={addNewColumn} addNewCard={addNewCard} deleteColumn={deleteColumn}/>
         <DragOverlay dropAnimation={dropAnimation}>
           {!type && null }
           {(type === 'column' && data) && <Column key={id} column={data} />}

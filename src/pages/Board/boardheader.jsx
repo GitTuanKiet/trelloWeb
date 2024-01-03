@@ -10,7 +10,7 @@ import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import Tooltip from '@mui/material/Tooltip'
-import { capitalizeFirstLetter } from '../../utils/formatters'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 
 export const BoardHeader = ({ board }) => {
   const styled = {
@@ -29,8 +29,10 @@ export const BoardHeader = ({ board }) => {
       paddingX: 2
     }}>
       <Box sx={{ display:'flex', gap:1 }}>
-        <Chip sx={styled} icon={<FlutterDashIcon />} label={board?.title} variant="outlined" clickable/>
-        <Chip sx={styled} icon={<RemoveModeratorIcon />} label={capitalizeFirstLetter(board?.type)} variant="outlined" clickable/>
+        <Tooltip title={board?.description === null?board.description:'trello cua tuan kiet'} placement="bottom-start">
+          <Chip sx={styled} icon={<FlutterDashIcon />} label={capitalizeFirstLetter(board?.title === null?board.title:'Tuan Kiet Trello')} variant="outlined" clickable/>
+        </Tooltip>
+        <Chip sx={styled} icon={<RemoveModeratorIcon />} label={capitalizeFirstLetter(board?.type === null?board.type:'Ho Tuan Kiet')} variant="outlined" clickable/>
         <Chip sx={styled} icon={<GamepadIcon />} label="Game board" variant="outlined" clickable/>
         <Chip sx={styled} icon={<AddToDriveIcon />} label="Add to Google Driver" variant="outlined" clickable/>
         <Chip sx={styled} icon={<FilterAltIcon />} label="Filter" variant="outlined" clickable/>

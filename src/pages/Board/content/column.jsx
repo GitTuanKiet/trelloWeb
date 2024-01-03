@@ -4,20 +4,36 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
 import DeleteIcon from '@mui/icons-material/Delete'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import AddBoxIcon from '@mui/icons-material/AddBox'
-import { Typography } from '@mui/material'
+import { InputBase, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 import ListCard from './ListCard'
 import { CSS } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
-import { sortArray } from '../../../utils/sorts'
+import { toast } from 'react-toastify'
+import MenuList from '@mui/material/MenuList'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Cloud from '@mui/icons-material/Cloud'
+import ContentCopy from '@mui/icons-material/ContentCopy'
+import ContentPaste from '@mui/icons-material/ContentPaste'
+import ContentCut from '@mui/icons-material/ContentCut'
+import { useConfirm } from 'material-ui-confirm'
 
 
-const Column = ({ column }) => {
+const Column = ({ column, addNewCard, deleteColumn }) => {
+  const [showAddCardForm, setShowAddCardForm] = useState(false)
+  const settingShow = () => setShowAddCardForm(!showAddCardForm)
+
+  const handleAddCard = (e) => {
+    if (e.target.value === '') return toast.error('Please enter card title')
+
+    addNewCard({ title: e.target.value, columnId: column._id })
+    settingShow()
+  }
+
   const [anchorEl, setAnchorEl] = useState(null)
 
   const open = Boolean(anchorEl)
@@ -30,10 +46,33 @@ const Column = ({ column }) => {
     setAnchorEl(null)
   }
 
+  const confirm = useConfirm()
+
+  const handleDeleteColumn = () => {
+    confirm({
+      title: 'Delete column',
+      description: 'Are you sure to delete this column?',
+      confirmationText: 'Delete',
+      cancellationText: 'Cancel',
+      dialogProps: { maxWidth: 'sm' },
+      confirmationButtonProps: { variant: 'contained', color: 'error' },
+      cancellationButtonProps: { variant: 'outlined' }
+    })
+      .then(() => {
+        handleClose()
+        const result = deleteColumn(column._id)
+        toast.success(result.resultDelete)
+      })
+      .catch(() => {
+        /* ... */
+      })
+
+  }
+
   const [cards, setCards] = useState([])
 
   useEffect(() => {
-    setCards(sortArray(column?.cards, column?.cardOrderIds, '_id'))
+    setCards(column.cards)
   }, [column])
 
   const {
@@ -104,7 +143,12 @@ const Column = ({ column }) => {
                 gap: 1
               },
               'ul': {
-                padding: 0.5
+                padding: 0.5,
+                'li': {
+                  '& .MuiListItemIcon-root': {
+                    color: 'text.secondary'
+                  }
+                }
               },
               '& .MuiDivider-root': {
                 margin: 0,
@@ -114,20 +158,43 @@ const Column = ({ column }) => {
             transformOrigin={{ horizontal: 'left', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           >
-            <MenuItem>
-              <StarBorderIcon />Star
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <ContentCopyIcon />Copy
-            </MenuItem>
-            <MenuItem>
-              <DeleteIcon />Destroy
-            </MenuItem>
+            <MenuList>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentCut fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Cut</ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentCopy fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Copy</ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentPaste fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Paste</ListItemText>
+              </MenuItem>
+              <MenuItem onClick ={handleDeleteColumn}>
+                <ListItemIcon>
+                  <DeleteIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete</ListItemText>
+              </MenuItem>
+              <Divider />
+              <MenuItem>
+                <ListItemIcon>
+                  <Cloud fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Web Clipboard</ListItemText>
+              </MenuItem>
+            </MenuList>
           </Menu>
         </Box>
         {/* cards column */}
-        <ListCard key={column._id} cards={cards} />
+        <ListCard key={column?._id} cards={cards} />
         {/* footer column */}
         <Box
           sx={{
@@ -142,8 +209,42 @@ const Column = ({ column }) => {
             minHeight:(theme) => theme.trello.columns.heightfooter
           }}
         >
-          <Button variant="outlined" startIcon={ <AddBoxIcon sx={{ cursor:'pointer', color:'text.primary' }} /> } ><Typography sx={{ color:'text.primary' }}>Add New Card</Typography></Button>
-          <Button variant="outlined" endIcon={<DragHandleIcon sx={{ cursor:'pointer', color:'text.primary' }} />} ></Button>
+          {!showAddCardForm?
+            <>
+              <Button
+                variant="outlined"
+                onClick={settingShow}
+                startIcon={ <AddBoxIcon sx={{ cursor:'pointer', color:'text.primary' }}
+                /> } >
+                <Typography sx={{ color:'text.primary' }}>Add New Card</Typography>
+              </Button>
+              <Button variant="outlined" endIcon={<DragHandleIcon sx={{ cursor:'pointer', color:'text.primary' }} />} ></Button>
+            </>:
+            <InputBase
+              autoFocus
+              data-no-dnd
+              placeholder='Enter a title for this card...'
+              onBlur={settingShow}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleAddCard(e)
+                }
+              }}
+              sx={{
+                width:'100%',
+                border:'none',
+                borderRadius:'inherit',
+                padding: 1,
+                bgcolor: 'divider',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                color:'text.primary',
+                fontWeight:'bold',
+                fontSize:'1.2rem'
+              }}
+            />
+          }
         </Box>
       </Box>
     </div>
