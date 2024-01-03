@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
-import WorkSpaces from './WorkSpaces'
+import WorkSpaces from './workspaces'
 
 const ListBoard = ({ boards }) => {
 
