@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useState } from 'react'
-import ListBoard from './Menus/listBoard'
+import ListBoard from './Menus/ListBoard'
 
 export const AppHeader = () => {
   const pages = ['Home', 'Boards', 'Templates', 'Workspace', 'Apps', 'Settings']
