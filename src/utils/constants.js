@@ -4,4 +4,4 @@ if (import.meta.env.NODE_ENV === 'production') {
   API_HOST = 'https://trello-api-xgk3.onrender.com/v1'
 }
 
-export default API_HOST
+export { API_HOST }
