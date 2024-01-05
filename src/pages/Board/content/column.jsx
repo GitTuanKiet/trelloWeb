@@ -50,17 +50,18 @@ const Column = ({ column, addNewCard, deleteColumn }) => {
 
   const handleDeleteColumn = () => {
     confirm({
-      title: 'Delete column',
-      description: 'Are you sure to delete this column?',
+      title: 'Are you sure delete ' + column.title + '?',
+      description: 'This will delete all cards in ' + column.title,
       confirmationText: 'Delete',
       cancellationText: 'Cancel',
       dialogProps: { maxWidth: 'sm' },
       confirmationButtonProps: { variant: 'contained', color: 'error' },
       cancellationButtonProps: { variant: 'outlined' }
     })
-      .then(() => {
+      .then(async () => {
         handleClose()
-        const result = deleteColumn(column._id)
+
+        const result = await deleteColumn(column._id)
         toast.success(result.resultDelete)
       })
       .catch(() => {
@@ -143,16 +144,11 @@ const Column = ({ column, addNewCard, deleteColumn }) => {
                 gap: 1
               },
               'ul': {
-                padding: 0.5,
                 'li': {
                   '& .MuiListItemIcon-root': {
                     color: 'text.secondary'
                   }
                 }
-              },
-              '& .MuiDivider-root': {
-                margin: 0,
-                borderColor: 'text.secondary'
               }
             }}
             transformOrigin={{ horizontal: 'left', vertical: 'top' }}

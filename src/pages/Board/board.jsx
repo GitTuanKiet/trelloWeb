@@ -101,7 +101,7 @@ export const Board = () => {
     cloneBoard.columnOrderIds = cloneBoard.columns.map((column) => column._id)
     setBoard(cloneBoard)
 
-    destroyColumnApi(columnId)
+    return destroyColumnApi(columnId)
   }
 
   if (!board) return (
