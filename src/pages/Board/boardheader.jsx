@@ -1,15 +1,12 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Avatar from '@mui/material/Avatar'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import AvatarGroup from '@mui/material/AvatarGroup'
-import Chip from '@mui/material/Chip'
-import FlutterDashIcon from '@mui/icons-material/FlutterDash'
-import AddToDriveIcon from '@mui/icons-material/AddToDrive'
-import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator'
-import GamepadIcon from '@mui/icons-material/Gamepad'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import Tooltip from '@mui/material/Tooltip'
+import { Avatar, AvatarGroup, Box, Button, Chip, Tooltip } from '@mui/material'
+import {
+  AddToDrive as AddToDriveIcon,
+  FilterAlt as FilterAltIcon,
+  FlutterDash as FlutterDashIcon,
+  Gamepad as GamepadIcon,
+  GroupAdd as GroupAddIcon,
+  RemoveModerator as RemoveModeratorIcon
+} from '@mui/icons-material'
 import { capitalizeFirstLetter } from '~/utils/formatters'
 
 export const BoardHeader = ({ board }) => {

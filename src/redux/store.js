@@ -1,6 +1,8 @@
-import { createStore } from 'redux'
-import rootReducer from './reducers'
+import { configureStore } from '@reduxjs/toolkit'
+import boardSlice from './board/boardSlice'
 
-const store = createStore(rootReducer)
-
-export default store
+export const store = configureStore({
+  reducer: {
+    boardSlice
+  }
+})

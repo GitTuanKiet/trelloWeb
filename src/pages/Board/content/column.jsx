@@ -1,37 +1,39 @@
-import Button from '@mui/material/Button'
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Divider from '@mui/material/Divider'
-import DeleteIcon from '@mui/icons-material/Delete'
-import DragHandleIcon from '@mui/icons-material/DragHandle'
-import AddBoxIcon from '@mui/icons-material/AddBox'
-import { InputBase, Typography } from '@mui/material'
-import Box from '@mui/material/Box'
+import {
+  Box, Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Typography,
+  Dialog, DialogActions, DialogContent, DialogTitle, TextField
+} from '@mui/material'
+import {
+  AddBox as AddBoxIcon,
+  Delete as DeleteIcon,
+  DragHandle as DragHandleIcon,
+  ArrowDropDown, Cloud, ContentCopy, ContentCut, ContentPaste
+} from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import ListCard from './ListCard'
 import { CSS } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
 import { toast } from 'react-toastify'
-import MenuList from '@mui/material/MenuList'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Cloud from '@mui/icons-material/Cloud'
-import ContentCopy from '@mui/icons-material/ContentCopy'
-import ContentPaste from '@mui/icons-material/ContentPaste'
-import ContentCut from '@mui/icons-material/ContentCut'
 import { useConfirm } from 'material-ui-confirm'
+import FileUploader from '~/components/imageUpload'
 
 
 const Column = ({ column, addNewCard, deleteColumn }) => {
-  const [showAddCardForm, setShowAddCardForm] = useState(false)
-  const settingShow = () => setShowAddCardForm(!showAddCardForm)
+  const [images, setImages] = useState([])
+  const [openDialog, setOpenDialog] = useState(false)
 
-  const handleAddCard = (e) => {
-    if (e.target.value === '') return toast.error('Please enter card title')
+  const showDialog = () => setOpenDialog(!openDialog)
 
-    addNewCard({ title: e.target.value, columnId: column._id })
-    settingShow()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const dataJson = Object.fromEntries(formData.entries())
+    if (dataJson.title === '') return toast.error('Please enter card title')
+    showDialog()
+    if (images.length > 0) {
+      dataJson.cover = images[0]
+    }
+    addNewCard({ ...dataJson, columnId: column._id })
+    toast.success('Add new card success')
   }
 
   const [anchorEl, setAnchorEl] = useState(null)
@@ -205,42 +207,58 @@ const Column = ({ column, addNewCard, deleteColumn }) => {
             minHeight:(theme) => theme.trello.columns.heightfooter
           }}
         >
-          {!showAddCardForm?
-            <>
-              <Button
+          <Button
+            variant="outlined"
+            onClick={showDialog}
+            startIcon={ <AddBoxIcon sx={{ cursor:'pointer', color:'text.primary' }}
+            /> } >
+            <Typography sx={{ color:'text.primary' }}>Add New Card</Typography>
+          </Button>
+          <Button variant="outlined" endIcon={<DragHandleIcon sx={{ cursor:'pointer', color:'text.primary' }} />} ></Button>
+          <Dialog
+            data-no-dnd
+            open={openDialog}
+            onClose={showDialog}
+            PaperProps={{
+              component: 'form',
+              onSubmit: handleSubmit
+            }}
+          >
+            <DialogTitle>Add New Card</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="title"
+                name="title"
+                label="Title"
+                type="text"
+                fullWidth
                 variant="outlined"
-                onClick={settingShow}
-                startIcon={ <AddBoxIcon sx={{ cursor:'pointer', color:'text.primary' }}
-                /> } >
-                <Typography sx={{ color:'text.primary' }}>Add New Card</Typography>
-              </Button>
-              <Button variant="outlined" endIcon={<DragHandleIcon sx={{ cursor:'pointer', color:'text.primary' }} />} ></Button>
-            </>:
-            <InputBase
-              autoFocus
-              data-no-dnd
-              placeholder='Enter a title for this card...'
-              onBlur={settingShow}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleAddCard(e)
-                }
-              }}
-              sx={{
-                width:'100%',
-                border:'none',
-                borderRadius:'inherit',
-                padding: 1,
-                bgcolor: 'divider',
-                display:'flex',
-                alignItems:'center',
-                justifyContent:'center',
-                color:'text.primary',
-                fontWeight:'bold',
-                fontSize:'1.2rem'
-              }}
-            />
-          }
+              />
+              <TextField
+                margin="dense"
+                id="description"
+                name="description"
+                label="Description"
+                type="text"
+                rows={4}
+                multiline
+                fullWidth
+                variant="outlined"
+              />
+              <Typography sx={{ mt: 2 }}>Cover</Typography>
+              <FileUploader
+                images={images}
+                setImages={setImages}
+              ></FileUploader>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={showDialog}>Cancle</Button>
+              <Button type="submit">Add</Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </Box>
     </div>

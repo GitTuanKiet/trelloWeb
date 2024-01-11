@@ -20,13 +20,6 @@ const ListCard = ({ cards }) => {
         '& .MuiCardActions-root': {
           justifyContent: 'flex-end'
         },
-        '& .MuiTypography-root': {
-          display: 'flex',
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          justifyContent: 'center',
-          padding: 1
-        },
         '& .MuiButton-root': {
           padding: 0,
           minWidth: 'auto',

@@ -2,14 +2,30 @@ import Box from '@mui/material/Box'
 import ListColumn from './content/ListColumn'
 import Card from './content/card'
 import Column from './content/column'
-import { genereatePlaceholder } from '~/utils/formatters'
+import { generatePlaceholder } from '~/utils/formatters'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { cloneDeep, isEmpty } from 'lodash'
 import { arrayMove } from '@dnd-kit/sortable'
 import { MouseSensor, TouchSensor } from '~/custom/Libs/dndKitSensors'
-import { DndContext, DragOverlay, defaultDropAnimationSideEffects, useSensor, useSensors, closestCorners, pointerWithin, getFirstCollision } from '@dnd-kit/core'
+import {
+  DndContext,
+  DragOverlay,
+  defaultDropAnimationSideEffects,
+  useSensor,
+  useSensors,
+  closestCorners,
+  pointerWithin,
+  getFirstCollision
+} from '@dnd-kit/core'
+import {
+  setMoveColumn,
+  setMoveCardWithoutColumn,
+  setMoveCardWithinColumn
+} from '~/redux/board/boardSlice'
+import { useDispatch } from 'react-redux'
 
-export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, setMoveCardWithinColumn, setMoveCardWithoutColumn, deleteColumn }) => {
+export const BoardContent = ({ board, addNewColumn, addNewCard, deleteColumn }) => {
+  const dispatch = useDispatch()
   const [columns, setColumns] = useState([])
   const [type, setType] = useState(null)
   const [data, setData] = useState(null)
@@ -90,7 +106,7 @@ export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, s
           return newColumns
         })
 
-        setMoveCardWithinColumn(newCardOrderIds, orderedCards, oldColumn._id)
+        dispatch(setMoveCardWithinColumn({ newCardOrderIds, orderedCards, columnId:oldColumn._id }))
 
       } else {
 
@@ -108,7 +124,7 @@ export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, s
         setColumns(orderedColumns)
 
         const newColumnOrderIds = orderedColumns.map(column => column._id)
-        setMoveColumn(newColumnOrderIds, orderedColumns)
+        dispatch(setMoveColumn({ newColumnOrderIds, orderedColumns }))
       }
     }
 
@@ -138,7 +154,7 @@ export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, s
       if (newActiveColumn) {
         newActiveColumn.cards = newActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
 
-        if (isEmpty(newActiveColumn.cards)) newActiveColumn.cards = [genereatePlaceholder(newActiveColumn)]
+        if (isEmpty(newActiveColumn.cards)) newActiveColumn.cards = [generatePlaceholder(newActiveColumn)]
 
         newActiveColumn.cardOrderIds = newActiveColumn.cards.map(card => card._id)
       }
@@ -156,7 +172,7 @@ export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, s
         newOverColumn.cardOrderIds = newOverColumn.cards.map(card => card._id)
       }
 
-      if (trigger === 'end') setMoveCardWithoutColumn(newColumns, activeDraggingCardId, oldColumn._id, overColumn._id)
+      if (trigger === 'end') dispatch(setMoveCardWithoutColumn({ newColumns, cardId:activeDraggingCardId, prevColumnId:oldColumn._id, nextColumnId:overColumn._id }))
 
       return newColumns
     })
@@ -216,7 +232,7 @@ export const BoardContent = ({ board, addNewColumn, addNewCard, setMoveColumn, s
         <DragOverlay dropAnimation={dropAnimation}>
           {!type && null }
           {(type === 'column' && data) && <Column key={id} column={data} />}
-          {(type === 'card' && data) && <Card key={id} card={data} />}
+          {(type === 'card' && data) && <Card key={id} card={data} dragging={true} />}
         </DragOverlay>
       </Box>
     </DndContext>

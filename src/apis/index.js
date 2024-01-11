@@ -36,7 +36,18 @@ export const destroyColumnApi = async (columnId) => {
 
 // Cards
 export const addNewCardApi = async (data) => {
-  const response = await axios.post(`${API_HOST}/cards/create`, data)
+  const formData = new FormData()
+  formData.append('boardId', data.boardId)
+  formData.append('columnId', data.columnId)
+  formData.append('title', data.title)
+  if (data.description) formData.append('description', data.description)
+  if (data.cover) formData.append('cover', data.cover)
+
+  const response = await axios.post(`${API_HOST}/cards/create`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
   return response.data
 }
 

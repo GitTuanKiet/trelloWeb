@@ -3,7 +3,7 @@ export const capitalizeFirstLetter = (val) => {
   return `${val.charAt(0).toUpperCase()}${val.slice(1)}`
 }
 
-export const genereatePlaceholder = (val) => {
+export const generatePlaceholder = (val) => {
   return {
     _id: `${val._id}-placeholder`,
     boardId: val.boardId,
