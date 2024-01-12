@@ -28,23 +28,28 @@ export const Board = () => {
     return dispatch(destroyColumn(board, columnId))
   }
 
-  if (loading || !board) {
-    return (
-      <Container disableGutters maxWidth='false' sx={{ height:'100vh', '@media (min-width: 600px)': { paddingLeft: '0', paddingRight: '0' } }}>
-        <AppHeader />
+  if (!board) return (
+    <Container disableGutters maxWidth='false' sx={{ height:'100vh', '@media (min-width: 600px)': { paddingLeft: '0', paddingRight: '0' } }}>
+      <AppHeader />
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </Container>
+  )
+
+  return (
+    <Container disableGutters maxWidth='false' sx={{ height:'100vh', '@media (min-width: 600px)': { paddingLeft: '0', paddingRight: '0' } }}>
+      <AppHeader />
+      {loading &&
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={loading}
         >
           <CircularProgress color="inherit" />
-        </Backdrop>
-      </Container>
-    )
-  }
-
-  return (
-    <Container disableGutters maxWidth='false' sx={{ height:'100vh', '@media (min-width: 600px)': { paddingLeft: '0', paddingRight: '0' } }}>
-      <AppHeader />
+        </Backdrop>}
       <BoardHeader board={board} />
       <BoardContent
         board={board}

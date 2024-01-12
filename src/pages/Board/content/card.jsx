@@ -50,7 +50,7 @@ const Card = ({ card, dragging }) => {
       }}>
       <Accordion disableGutters expanded={dragging}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color:(theme) => theme.palette.text.secondary }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color:(theme) => theme.palette. text.secondary }} />}
         >
           <CardContent sx={{ p:0, '& .MuiTypography-root':{ padding: '1px 4px' } }}>
             <Typography sx={{ fontSize:'1.2rem', fontWeight:'bold' }}>
