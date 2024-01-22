@@ -1,5 +1,6 @@
 import AppBar from '~/modules/components/AppBar'
 import Toolbar from '~/modules/components/Toolbar'
+import Search from '~/modules/components/Search'
 import { Box, Link } from '@mui/material'
 
 const rightLink = {
@@ -18,17 +19,18 @@ function AppAppBar() {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/trellok/auth/"
+            href="/"
             sx={{ fontSize: 24 }}
           >
             {'trellok'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Search />
             <Link
               color="inherit"
               variant="h6"
               underline="none"
-              href="/trellok/auth/sign-in/"
+              href="/sign-in/"
               sx={rightLink}
             >
               {'Sign In'}
@@ -36,7 +38,7 @@ function AppAppBar() {
             <Link
               variant="h6"
               underline="none"
-              href="/trellok/auth/sign-up/"
+              href="/sign-up/"
               sx={{ ...rightLink, color: 'secondary.main' }}
             >
               {'Sign Up'}

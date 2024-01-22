@@ -1,5 +1,6 @@
 import { experimentalStyled as styled } from '@mui/material/styles'
 import { SvgIcon as MuiSvgIcon } from '@mui/material'
+import IconButton from './IconButton'
 
 const SvgIconRoot = styled(MuiSvgIcon)(({ theme, inheritViewBox }) => ({
   width: 32,
@@ -16,7 +17,11 @@ const SvgIconRoot = styled(MuiSvgIcon)(({ theme, inheritViewBox }) => ({
 }))
 
 function SvgIcon(props) {
-  return <SvgIconRoot {...props} />
+  return (
+    <IconButton>
+      <SvgIconRoot {...props} />
+    </IconButton>
+  )
 }
 
 export default SvgIcon

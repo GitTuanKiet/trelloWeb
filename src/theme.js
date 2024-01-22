@@ -3,55 +3,6 @@ import { amber, pink, grey } from '@mui/material/colors'
 
 
 const theme = extendTheme({
-  trello: {
-    headerHeight: '64px',
-    boardHeaderHeight: '64px',
-    boardContentHeight: 'calc(100vh - 128px)',
-    columns: {
-      width: '333px',
-      height: 'calc(100vh - 128px - 24px)',
-      heightheader: '64px',
-      heightfooter: '56px',
-      heightcontent: 'calc(100vh - 128px - 24px - 134px)'
-    }
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          '*::-webkit-scrollbar': {
-            width: '0.4em',
-            height: '0.4em'
-          },
-          '*::-webkit-scrollbar-track': {
-            'WebkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
-          },
-          '*::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(0,0,0,.1)',
-            outline: '1px solid slategrey',
-            borderRadius: '4px'
-          },
-          '*::webkit-scrollbar-thumb:hover': {
-            backgroundColor: 'rgba(0,0,0,.2)'
-          }
-        }
-      }
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontSize: '1.25rem',
-          fontWeight:'bold',
-          border:'none',
-          '&:hover': {
-            border:'none',
-            backgroundColor: 'transparent'
-          }
-        }
-      }
-    }
-  },
   colorSchemes: {
     light: {
       palette: {

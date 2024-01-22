@@ -1,11 +1,42 @@
-import { Provider } from 'react-redux'
-import { store } from './redux/store'
-import Pages from './pages'
+import { useSelector } from 'react-redux'
 
-export default function App() {
+import { Experimental_CssVarsProvider as CssVarsprovider } from '@mui/material/styles'
+import { CssBaseline, StyledEngineProvider } from '@mui/material'
+
+// routing
+import Routes from '~/routes'
+
+// defaultTheme
+import themes from '~/themes'
+
+// project imports
+import NavigationScroll from '~/layout/NavigationScroll'
+
+// third-party
+import { ConfirmProvider } from 'material-ui-confirm'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+// ==============================|| APP ||============================== //
+
+const App = () => {
+  const customization = useSelector((state) => state.reducer.customization)
+
   return (
-    <Provider store={store}>
-      <Pages />
-    </Provider>
+    <StyledEngineProvider injectFirst>
+      <CssVarsprovider theme={themes(customization)}>
+        <ConfirmProvider>
+          <CssBaseline />
+          <NavigationScroll>
+            <Routes />
+          </NavigationScroll>
+          <ToastContainer
+            position="bottom-right"
+          />
+        </ConfirmProvider>
+      </CssVarsprovider>
+    </StyledEngineProvider>
   )
 }
+
+export default App

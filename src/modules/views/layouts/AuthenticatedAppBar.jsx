@@ -29,14 +29,12 @@ function AuthenticatedAppBar() {
             >
               <AppsIcon />
             </IconButton>
-            <IconButton>
-              <SvgIcon component={TrelloIcon} inheritViewBox />
-            </IconButton>
+            <SvgIcon component={TrelloIcon} inheritViewBox />
             <Link
               variant="h6"
               underline="none"
               color="inherit"
-              href="/trellok/auth/"
+              href="/"
               sx={{ fontSize: 32, fontFamily: 'monospace' }}
             >
               {'trellok'}
@@ -46,7 +44,7 @@ function AuthenticatedAppBar() {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/trellok/board/"
+            href="/board/"
             sx={{ fontSize: 32 }}
           >
             {'board'}
@@ -56,7 +54,7 @@ function AuthenticatedAppBar() {
               color="inherit"
               variant="h6"
               underline="none"
-              href="/trellok/auth/sign-out/"
+              href="/sign-out/"
               sx={rightLink}
             >
               {'Sign Out'}
