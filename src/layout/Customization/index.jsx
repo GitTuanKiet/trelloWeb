@@ -27,7 +27,7 @@ import {
 // project imports
 import SubCard from '~/ui-component/cards/SubCard'
 import AnimateButton from '~/ui-component/extended/AnimateButton'
-import FontTab from './fontTab'
+import FontTab from './FontTab'
 import ThemeTab from './themeTab'
 import { RESET_CUSTOMIZATION } from '~/redux/store/actions'
 
