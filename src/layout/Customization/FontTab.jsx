@@ -5,24 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@mui/material/styles'
 import {
   FormControl,
-  FormControlLabel,
   Grid,
-  Radio,
-  RadioGroup,
   Slider,
-  Tooltip,
   Select,
   MenuItem,
   Typography
 } from '@mui/material'
 
-// third-party
-import PerfectScrollbar from 'react-perfect-scrollbar'
-
 // project imports
 import SubCard from '~/ui-component/cards/SubCard'
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '~/redux/store/actions'
-import { fontFamilies } from '~/redux/store/constant'
+import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '~/redux/customization/customizationSlice'
+import { fontFamilies } from '~/utils/constants'
 
 // concat 'px'
 function valueText(value) {
@@ -31,9 +24,10 @@ function valueText(value) {
 
 // ==============================|| FONT TAB ||============================== //
 
-const FontTab = ({ customization }) => {
-  const theme = useTheme()
+const FontTab = () => {
+  // const theme = useTheme()
   const dispatch = useDispatch()
+  const customization = useSelector((state) => state.customization)
 
   // state - border radius
   const [borderRadius, setBorderRadius] = useState(customization.borderRadius)
@@ -43,13 +37,7 @@ const FontTab = ({ customization }) => {
 
   useEffect(() => {
     setBorderRadius(customization.borderRadius)
-    setFontFamily(customization.fontFamily)
-  }, [customization])
-
-  useEffect(() => {
-    dispatch({ type: SET_BORDER_RADIUS, borderRadius })
-  }, [dispatch, borderRadius])
-
+  }, [customization.borderRadius])
 
   // state - font family
   const [fontFamily, setFontFamily] = useState(customization.fontFamily)
@@ -58,7 +46,17 @@ const FontTab = ({ customization }) => {
   }
 
   useEffect(() => {
-    dispatch({ type: SET_FONT_FAMILY, fontFamily })
+    setFontFamily(customization.fontFamily)
+  }, [customization.fontFamily])
+
+  // dispatch
+  useEffect(() => {
+    dispatch(SET_BORDER_RADIUS( borderRadius ))
+  }, [dispatch, borderRadius])
+
+
+  useEffect(() => {
+    dispatch(SET_FONT_FAMILY( fontFamily ))
   }, [dispatch, fontFamily])
 
   return (
@@ -135,9 +133,7 @@ const FontTab = ({ customization }) => {
             </Grid>
           </Grid>
         </SubCard>
-
       </Grid>
-
     </>
   )
 }

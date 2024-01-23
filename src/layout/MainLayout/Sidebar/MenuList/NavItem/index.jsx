@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles'
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material'
 
 // project imports
-import { MENU_OPEN, SET_MENU } from '~/redux/store/actions'
+import { MENU_OPEN, SET_MENU } from '~/redux/customization/customizationSlice'
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
@@ -19,7 +19,7 @@ const NavItem = ({ item, level }) => {
   const theme = useTheme()
   const dispatch = useDispatch()
   const { pathname } = useLocation()
-  const customization = useSelector((state) => state.reducer.customization)
+  const customization = useSelector((state) => state.customization)
   const matchesSM = useMediaQuery(theme.breakpoints.down('lg'))
 
   const Icon = item.icon
@@ -48,8 +48,8 @@ const NavItem = ({ item, level }) => {
   }
 
   const itemHandler = (id) => {
-    dispatch({ type: MENU_OPEN, id })
-    if (matchesSM) dispatch({ type: SET_MENU, opened: false })
+    dispatch(MENU_OPEN( id ))
+    if (matchesSM) dispatch(SET_MENU( false ))
   }
 
   // active menu item on page load
@@ -59,7 +59,7 @@ const NavItem = ({ item, level }) => {
       .split('/')
       .findIndex((id) => id === item.id)
     if (currentIndex > -1) {
-      dispatch({ type: MENU_OPEN, id: item.id })
+      dispatch(MENU_OPEN( item.id ))
     }
     // eslint-disable-next-line
   }, [pathname]);

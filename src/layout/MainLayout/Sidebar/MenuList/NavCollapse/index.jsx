@@ -18,7 +18,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
 const NavCollapse = ({ menu, level }) => {
   const theme = useTheme()
-  const customization = useSelector((state) => state.reducer.customization)
+  const customization = useSelector((state) => state.customization)
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)

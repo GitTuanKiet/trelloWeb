@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // material-ui
@@ -6,9 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import {
   Button,
   ButtonGroup,
-  Grid,
-  useColorScheme,
-  Typography
+  useColorScheme
 } from '@mui/material'
 import {
   Brightness3,
@@ -16,19 +14,16 @@ import {
   SettingsBrightness as SettingsBrightnessIcon
 } from '@mui/icons-material'
 
-// third-party
-import PerfectScrollbar from 'react-perfect-scrollbar'
-
 // project imports
-import { SET_MODE } from '~/redux/store/actions'
-import { gridSpacing } from '~/redux/store/constant'
+import { SET_MODE } from '~/redux/customization/customizationSlice'
 import SubCard from '~/ui-component/cards/SubCard'
 
 // ==============================|| THEME TAB ||============================== //
 
-const ThemeTab = ({ customization }) => {
+const ThemeTab = () => {
   const theme = useTheme()
   const dispatch = useDispatch()
+  const customization = useSelector((state) => state.customization)
 
   // state - mode
   const { mode, setMode } = useColorScheme()
@@ -41,7 +36,7 @@ const ThemeTab = ({ customization }) => {
   }, [customization, setMode])
 
   useEffect(() => {
-    dispatch({ type: SET_MODE, mode })
+    dispatch(SET_MODE( mode ))
   }, [dispatch, mode])
 
   return (

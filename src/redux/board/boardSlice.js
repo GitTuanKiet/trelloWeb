@@ -1,14 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { updateBoardApi, setMoveCardWithoutColumnApi, updateColumnApi } from '~/apis'
 import { cloneDeep } from 'lodash'
+import { mockData } from '~/apis/mock-data'
+
+export const initialState = {
+  loading: false,
+  error: null,
+  board: {
+    ...mockData.board
+  }
+}
 
 const boardSlice = createSlice({
   name: 'board',
-  initialState: {
-    board: null,
-    loading: false,
-    error: null
-  },
+  initialState: initialState,
   reducers: {
     setBoard: (state, action) => {
       state.board = action.payload

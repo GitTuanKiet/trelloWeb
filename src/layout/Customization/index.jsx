@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // types
@@ -27,9 +27,9 @@ import {
 // project imports
 import SubCard from '~/ui-component/cards/SubCard'
 import AnimateButton from '~/ui-component/extended/AnimateButton'
-import FontTab from './fontTab'
+import FontTab from './FontTab'
 import ThemeTab from './themeTab'
-import { RESET_CUSTOMIZATION } from '~/redux/store/actions'
+import { RESET_CUSTOMIZATION } from '~/redux/customization/customizationSlice'
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -74,7 +74,6 @@ function a11yProps(index) {
 const Customization = () => {
   const theme = useTheme()
   const dispatch = useDispatch()
-  const customization = useSelector((state) => state.reducer.customization)
 
   // drawer on/off
   const [open, setOpen] = useState(false)
@@ -134,7 +133,7 @@ const Customization = () => {
             direction="row"
             directionContent="row"
           >
-            <Button variant="contained" onClick={() => dispatch({ type: RESET_CUSTOMIZATION })}>
+            <Button variant="contained" onClick={() => dispatch(RESET_CUSTOMIZATION())}>
               <Typography variant="subtitle1"> Reset </Typography>
             </Button>
             <ClearIcon onClick={handleToggle} sx={{ cursor: 'pointer' }} />
@@ -156,10 +155,10 @@ const Customization = () => {
               />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
-              <ThemeTab customization={customization} />
+              <ThemeTab />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <FontTab customization={customization} />
+              <FontTab />
             </CustomTabPanel>
           </Box>
         </PerfectScrollbar>
