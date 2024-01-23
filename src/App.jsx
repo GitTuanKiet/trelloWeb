@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css'
 // ==============================|| APP ||============================== //
 
 const App = () => {
-  const customization = useSelector((state) => state.reducer.customization)
+  const customization = useSelector((state) => state.customization)
 
   return (
     <StyledEngineProvider injectFirst>

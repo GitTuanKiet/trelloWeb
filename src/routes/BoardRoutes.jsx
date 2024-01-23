@@ -2,7 +2,7 @@ import { lazy } from 'react'
 
 // project imports
 import Loadable from '~/ui-component/Loadable'
-import MinimalLayout from '~/layout/MinimalLayout'
+import MainLayout from '~/layout/MainLayout'
 
 // board routing
 const Board = Loadable(lazy(() => import('~/views/pages/Board/_id')))
@@ -10,11 +10,11 @@ const Board = Loadable(lazy(() => import('~/views/pages/Board/_id')))
 // ==============================|| BOARD ROUTING ||============================== //
 
 const BoardRoutes = {
-  path: '/board',
-  element: <MinimalLayout />,
+  path: '/pages/board',
+  element: <MainLayout />,
   children: [
     {
-      path: '/board',
+      path: '/pages/board',
       element: <Board />
     }
   ]

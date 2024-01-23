@@ -1,6 +1,6 @@
 const config = {
   basename: '',
-  defaultPath: '/home',
+  defaultPath: '/pages/board',
   mode: 'system', // light, dark, system
   fontFamily: 'Roboto',
   borderRadius: 12

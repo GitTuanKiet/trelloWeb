@@ -11,8 +11,8 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import Customization from '../Customization'
 import navigation from '~/menu-items'
-import { drawerWidth } from '~/redux/store/constant'
-import { SET_MENU } from '~/redux/store/actions'
+import { drawerWidth } from '~/utils/constants'
+import { SET_MENU } from '~/redux/customization/customizationSlice'
 
 // assets
 import { IconChevronRight } from '@tabler/icons-react'
@@ -57,10 +57,10 @@ const MainLayout = () => {
   const theme = useTheme()
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'))
   // Handle left drawer
-  const leftDrawerOpened = useSelector((state) => state.reducer.customization.opened)
+  const leftDrawerOpened = useSelector((state) => state.customization.opened)
   const dispatch = useDispatch()
   const handleLeftDrawerToggle = () => {
-    dispatch({ type: SET_MENU, opened: !leftDrawerOpened })
+    dispatch(SET_MENU( !leftDrawerOpened ))
   }
 
   return (

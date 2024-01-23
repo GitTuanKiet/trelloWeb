@@ -62,6 +62,7 @@ const Card = ({ card, dragging }) => {
           {card?.cover && <CardMedia
             component="img"
             image={`data:image/png;base64,${card.cover.toString('base64')}`}
+            alt={card.title}
             sx={{
               width: '100%',
               height: '100%',

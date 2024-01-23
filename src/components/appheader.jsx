@@ -67,16 +67,7 @@ export const AppHeader = () => {
         </Menu>
         <SvgIcon component={TrelloIcon} inheritViewBox sx={{
           width: 28,
-          height: 28,
-          '& .bg':{
-            fill:(theme) => theme.palette.divider
-          }
-          // '& .dai':{
-          //   fill: (theme) => theme.palette.background.paper
-          // },
-          // '& .ngan':{
-          //   fill: (theme) => theme.palette.background.default
-          // }
+          height: 28
         }}
         />
         <Typography
