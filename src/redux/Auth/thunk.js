@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { loginApi, registerApi, forgotPasswordApi, updateProfileApi, updatePasswordApi, fetchListBoardApi, destroyBoardApi } from '~/apis/authApi'
-import { setLoading, setError, setToken, setUser, setList } from './slice'
+import { setLoading, setError, setToken, setUser, setList, getState } from './slice'
 import { addBoardApi } from '~/apis'
 import { isAuth } from '~/utils/auth'
+import { cloneDeep } from 'lodash'
 
 export const login = createAsyncThunk('auth/login', async (data, { dispatch }) => {
   try {
@@ -85,9 +86,8 @@ export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dis
   try {
     dispatch(setLoading(true))
     const response = await addBoardApi(data)
-    dispatch(setList((prev) => {
-      return [...prev, response]
-    }))
+    const newList = [...getState().auth.listBoard, response]
+    dispatch(setList(newList))
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
@@ -99,9 +99,9 @@ export const destroyBoard = (boardId) => async (dispatch) => {
   try {
     if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
-    dispatch(setList((prev) => {
-      return prev.filter((board) => board._id !== boardId)
-    }))
+    const clone = cloneDeep(getState().auth.listBoard)
+    const newList = clone.filter((item) => item._id !== boardId)
+    dispatch(setList(newList))
     return await destroyBoardApi(boardId)
   } catch (error) {
     dispatch(setError(error.message))
