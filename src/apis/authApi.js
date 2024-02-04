@@ -44,7 +44,3 @@ export const fetchListBoardApi = async () => {
   return response.data
 }
 
-export const destroyBoardApi = async (boardId) => {
-  const response = await axios.delete(`${API_HOST}/boards/${boardId}`, Authorization())
-  return response.data
-}

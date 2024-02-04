@@ -8,8 +8,14 @@ import {
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
+import { useSelector, useDispatch } from 'react-redux'
+import { destroyColumn } from '~/redux/board/boardThunk'
 
-const HeaderColumn = ({ deleteColumn, column }) => {
+const HeaderColumn = ({ column }) => {
+
+  const dispatch = useDispatch()
+
+  const { board, loading, error } = useSelector((state) => state.board)
 
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -26,26 +32,26 @@ const HeaderColumn = ({ deleteColumn, column }) => {
   const confirm = useConfirm()
 
   const handleDeleteColumn = () => {
-    confirm({
-      title: 'Are you sure delete ' + column.title + '?',
-      description: 'This will delete all cards in ' + column.title,
-      confirmationText: 'Delete',
-      cancellationText: 'Cancel',
-      dialogProps: { maxWidth: 'sm' },
-      confirmationButtonProps: { variant: 'contained', color: 'error' },
-      cancellationButtonProps: { variant: 'outlined' }
-    })
-      .then(async () => {
-        handleClose()
-
-        const result = await deleteColumn(column._id)
-        if (result.resultDelete) toast.success(result.resultDelete)
-        else toast.error(result)
-      })
-      .catch((error) => {
+    try {
+      if (loading) {
+        toast.error('Please wait, loading...')
+        return
+      } else if (error) {
         toast.error(error)
-      })
-
+        return
+      } else {
+        confirm({ description: 'Are you sure you want to delete this column?' })
+          .then(() => {
+            dispatch(destroyColumn(column?._id))
+            toast.success('Delete column success')
+          })
+          .catch(() => {
+            toast.error('Delete column cancel')
+          })
+      }
+    } catch (error) {
+      toast.error(error)
+    }
   }
 
   return (

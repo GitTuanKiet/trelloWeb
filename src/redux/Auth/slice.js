@@ -1,20 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { logoutApi } from '~/apis/authApi'
 import { setTokenJWT, setProfile, removeTokenJWT } from '~/utils/auth'
+import { mockData } from '~/apis/mock-data'
+
+const { _id, title, description } = mockData.board
 
 export const initialState = {
   loading: false,
   error: null,
   user: null,
   token: null,
-  listBoard: []
+  listBoard: [{ _id, title, description }]
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
-    getState: (state) => state,
     setList: (state, action) => {
       state.listBoard = action.payload
       state.loading = false
@@ -44,5 +46,5 @@ const authSlice = createSlice({
   }
 })
 
-export const { setUser, setToken, setLoading, setError, logout, setList, getState } = authSlice.actions
+export const { setUser, setToken, setLoading, setError, logout, setList } = authSlice.actions
 export default authSlice.reducer

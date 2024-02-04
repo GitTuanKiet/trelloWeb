@@ -25,10 +25,11 @@ import {
   setMoveCardWithoutColumn,
   setMoveCardWithinColumn
 } from '~/redux/board/boardSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Content = ({ board, addNewColumn, addNewCard, deleteColumn }) => {
+const Content = () => {
   const dispatch = useDispatch()
+  const { board } = useSelector((state) => state.board)
   const [columns, setColumns] = useState([])
   const [type, setType] = useState(null)
   const [data, setData] = useState(null)
@@ -229,7 +230,7 @@ const Content = ({ board, addNewColumn, addNewCard, deleteColumn }) => {
     >
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12} sx={{ height: (theme) => theme.trello.boardContentHeight }}>
-          <ListColumn key={board?._id} columns={columns} addNewColumn={addNewColumn} addNewCard={addNewCard} deleteColumn={deleteColumn}/>
+          <ListColumn key={board?._id} columns={columns} />
           <DragOverlay dropAnimation={dropAnimation}>
             {!type && null }
             {(type === 'column' && data) && <Column key={id} column={data} />}

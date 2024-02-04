@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles'
@@ -22,7 +23,7 @@ import { useConfirm } from 'material-ui-confirm'
 import MainChip from '~/ui-component/chips/MainChip'
 import SkeletonChip from '~/ui-component/chips/Skeleton/TabChip'
 import { gridSpacing } from '~/utils/constants'
-import { destroyBoardApi } from '~/apis/authApi'
+import { fetchListBoard, addBoard, destroyBoard } from '~/redux/Auth/thunk'
 
 // assets
 
@@ -62,35 +63,48 @@ const ChipWrapper = styled(MainChip)(({ theme }) => ({
   }
 }))
 
-const TabsChip = ({ listBoard, isLoading, handleAddBoard }) => {
+const TabsChip = () => {
   const theme = useTheme()
+  const dispatch = useDispatch()
+  const confirm = useConfirm()
+  const Navigate = useNavigate()
+
   const [openDialog, setOpenDialog] = useState(false)
   const showDialog = () => setOpenDialog(!openDialog)
-  const Navigate = useNavigate()
   const { boardId } = useParams()
   const [selected, setSelected] = useState(boardId)
 
-  const confirm = useConfirm()
+  const { listBoard, loading, error } = useSelector((state) => state.auth)
 
-  const handleDelete = ({ id, title }) => {
-    confirm({
-      title: 'Are you sure delete ' + title + '?',
-      description: 'This will delete all in ' + title,
-      confirmationText: 'Delete',
-      cancellationText: 'Cancel',
-      dialogProps: { maxWidth: 'sm' },
-      confirmationButtonProps: { variant: 'contained', color: 'error' },
-      cancellationButtonProps: { variant: 'outlined' }
-    })
-      .then(async () => {
-        const result = await destroyBoardApi(id)
-        if (result.resultDelete) toast.success(result.resultDelete)
-        else toast.error(result)
+  const [list, setList] = useState(listBoard)
+
+  const handleDelete = async ({ id, title }) => {
+    try {
+      await confirm({
+        title: 'Are you sure to delete ' + title + '?',
+        description: 'This will delete all cards in ' + title,
+        confirmationText: 'Delete',
+        cancellationText: 'Cancel',
+        dialogProps: { maxWidth: 'sm' },
+        confirmationButtonProps: { variant: 'contained', color: 'error' },
+        cancellationButtonProps: { variant: 'outlined' }
       })
-      .catch((error) => {
+
+      if (loading) {
+        toast.error('Please wait, still loading')
+        return
+      }
+
+      if (error) {
         toast.error(error)
-      })
+        return
+      }
 
+      dispatch(destroyBoard(id))
+      toast.success('Delete ' + title + ' success')
+    } catch (error) {
+      toast.error('An error occurred: ' + error.message)
+    }
   }
 
   const handleChange = ({ id, title }) => {
@@ -102,34 +116,50 @@ const TabsChip = ({ listBoard, isLoading, handleAddBoard }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const dataJson = Object.fromEntries(formData.entries())
-    handleAddBoard(dataJson)
-    showDialog()
+    const data = new FormData(e.currentTarget)
+    const title = data.get('title')
+    const description = data.get('description')
+    if (loading) {
+      toast.error('Please wait, still loading')
+      return
+    } else if (error) {
+      toast.error(error)
+      return
+    } else {
+      dispatch(addBoard({ title, description }))
+      showDialog()
+      toast.success('Add ' + title + ' success')
+    }
   }
+
+  useEffect(() => {
+    dispatch(fetchListBoard())
+  }, [dispatch])
+
+  useEffect(() => {
+    setList(listBoard)
+  }, [listBoard])
 
   return (
     <>
       <Stack direction="row" spacing={gridSpacing}>
-        {isLoading ? (<SkeletonChip />) : (
-          listBoard && listBoard.map((board, index) => {
-            const { _id, title, description } = board
-            return (
-              <ChipWrapper
-                key={index}
-                title={title}
-                tooltip={description}
-                handleDelete={() => handleDelete({ id : _id, title : title })}
-                handleClick={() => handleChange({ id : _id, title : title })}
-                sx={{
-                  backgroundColor: theme.palette.primary.dark,
-                  color: '#fff',
-                  '& .MuiChip-icon': {
-                    color: '#fff'
-                  }
-                }}
-              />)
-          })
+        {loading ? (<SkeletonChip />) : (
+          list.length > 0 && list.map((board, index) => (
+            <ChipWrapper
+              key={index}
+              title={board.title}
+              tooltip={board.description}
+              handleDelete={() => handleDelete({ id :board._id, title : board.title })}
+              handleClick={() => handleChange({ id : board._id, title : board.title })}
+              sx={{
+                backgroundColor: theme.palette.primary.dark,
+                color: '#fff',
+                '& .MuiChip-icon': {
+                  color: '#fff'
+                }
+              }}
+            />)
+          )
         )}
         <Chip
           label="Add"
@@ -188,7 +218,7 @@ const TabsChip = ({ listBoard, isLoading, handleAddBoard }) => {
 }
 
 TabsChip.propTypes = {
-  isLoading: PropTypes.bool
+  loading: PropTypes.bool
 }
 
 export default TabsChip

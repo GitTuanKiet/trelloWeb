@@ -43,7 +43,7 @@ const boardSlice = createSlice({
 
       state.board = cloneBoard
 
-      updateColumnApi(columnId, { cardOrderIds: newCardOrderIds })
+      updateColumnApi(cloneBoard._id, { _id: columnId, cardOrderIds: newCardOrderIds })
     },
     setMoveCardWithoutColumn: (state, action) => {
       const { newColumns, cardId, prevColumnId, nextColumnId } = action.payload
