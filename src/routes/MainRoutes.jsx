@@ -5,7 +5,7 @@ import MainLayout from '~/layout/MainLayout'
 import Loadable from '~/ui-component/Loadable'
 
 // board routing
-const Board = Loadable(lazy(() => import('~/views/board/_id')))
+const Board = Loadable(lazy(() => import('~/views/board')))
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('~/views/utilities/Typography')))
@@ -26,16 +26,11 @@ const MainRoutes = {
     },
     {
       path: 'board',
-      children: [
-        {
-          path: '',
-          element: <Board />
-        },
-        {
-          path: ':id',
-          element: <Board />
-        }
-      ]
+      element: <Board />
+    },
+    {
+      path: 'board/:id',
+      element: <Board />
     },
     {
       path: 'utils',

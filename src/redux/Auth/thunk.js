@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { loginApi, registerApi, forgotPasswordApi, updateProfileApi, updatePasswordApi, fetchListBoardApi, destroyBoardApi } from '~/apis/authApi'
-import { setLoading, setError, setToken, setUser, setList, getState } from './slice'
-import { addBoardApi } from '~/apis'
+import { loginApi, registerApi, forgotPasswordApi, updateProfileApi, updatePasswordApi, fetchListBoardApi } from '~/apis/authApi'
+import { setLoading, setError, setToken, setUser, setList } from './slice'
+import { addBoardApi, destroyBoardApi } from '~/apis'
 import { isAuth } from '~/utils/auth'
 import { cloneDeep } from 'lodash'
 
@@ -82,12 +82,15 @@ export const fetchListBoard = createAsyncThunk('boardBar/fetchListBoard', async 
   }
 })
 
-export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dispatch }) => {
+export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dispatch, getState }) => {
   try {
+    if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
     const response = await addBoardApi(data)
-    const newList = [...getState().auth.listBoard, response]
-    dispatch(setList(newList))
+    const clone = cloneDeep(getState().auth.listBoard)
+    clone.push(response)
+    dispatch(setList(clone))
+    return response
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
@@ -95,17 +98,19 @@ export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dis
   }
 })
 
-export const destroyBoard = (boardId) => async (dispatch) => {
+export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boardId, { dispatch, getState }) => {
   try {
     if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
+    const result = await destroyBoardApi(boardId)
     const clone = cloneDeep(getState().auth.listBoard)
-    const newList = clone.filter((item) => item._id !== boardId)
-    dispatch(setList(newList))
-    return await destroyBoardApi(boardId)
+    const index = clone.findIndex((board) => board._id === boardId)
+    clone.splice(index, 1)
+    dispatch(setList(clone))
+    return result
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
     dispatch(setLoading(false))
   }
-}
+})

@@ -6,7 +6,7 @@ import { Box } from '@mui/material'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 
 
-const ListColumn = ({ columns, addNewColumn, addNewCard, deleteColumn }) => {
+const ListColumn = ({ columns }) => {
   return (
     <SortableContext items={columns?.map(column => column._id)} strategy={horizontalListSortingStrategy}>
       <Box sx={{
@@ -23,9 +23,9 @@ const ListColumn = ({ columns, addNewColumn, addNewCard, deleteColumn }) => {
         }
       }}>
         {/* column */}
-        {columns?.map((column) => ( <Column key={column?._id} column={column} addNewCard={addNewCard} deleteColumn={deleteColumn} /> ))}
+        {columns?.map((column) => ( <Column key={column?._id} column={column} /> ))}
         {/* add new column */}
-        <AddColumnBtn addNewColumn={addNewColumn} />
+        <AddColumnBtn />
 
       </Box>
     </SortableContext>

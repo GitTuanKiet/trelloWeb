@@ -9,9 +9,14 @@ import {
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import FileUploader from '~/components/imageUpload'
+import { useSelector, useDispatch } from 'react-redux'
+import { newCard } from '~/redux/board/boardThunk'
 
 
-const FooterColumn = ({ column, addNewCard }) => {
+const FooterColumn = ({ column }) => {
+  const dispatch = useDispatch()
+  const { board, loading, error } = useSelector((state) => state.board)
+
   const [images, setImages] = useState([])
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -19,15 +24,27 @@ const FooterColumn = ({ column, addNewCard }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const dataJson = Object.fromEntries(formData.entries())
-    if (dataJson.title === '') return toast.error('Please enter card title')
-    showDialog()
-    if (images.length > 0) {
-      dataJson.cover = images[0]
+    const formData = new FormData(e.target)
+    const data = {
+      title: formData.get('title'),
+      description: formData.get('description'),
+      cover: images
     }
-    addNewCard({ ...dataJson, columnId: column._id })
-    toast.success('Add new card success')
+    try {
+      if (loading) {
+        toast.error('Please wait, loading...')
+        return
+      } else if (error) {
+        toast.error(error)
+        return
+      } else {
+        dispatch(newCard({ columnId:column?._id, ...data }))
+        toast.success('Add new card success')
+        showDialog()
+      }
+    } catch (error) {
+      toast.error(error)
+    }
   }
 
   return (

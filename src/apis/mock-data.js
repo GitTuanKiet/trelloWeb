@@ -2,8 +2,8 @@ export const mockData = {
   board: {
     _id: 'board-id-01',
     title: 'TuanKiet TrelloWeb-Project',
+    slug: 'tuankiet-trello-web-project',
     description: 'Pro MERN stack Course',
-    type: 'public', // 'private'
     ownerIds: [], // Những users là Admin của board
     memberIds: [], // Những users là member bình thường của board
     columnOrderIds: ['column-id-01', 'column-id-02', 'column-id-03'], // Thứ tự sắp xếp / vị trí của các Columns trong 1 boards

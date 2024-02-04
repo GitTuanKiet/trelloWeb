@@ -7,9 +7,10 @@ import HeaderColumn from './HeaderColumn'
 import FooterColumn from './FooterColumn'
 
 
-const Column = ({ column, addNewCard, deleteColumn }) => {
+const Column = ({ column }) => {
 
-  const [cards, setCards] = useState([])
+
+  const [cards, setCards] = useState(column.cards)
 
   useEffect(() => {
     setCards(column.cards)
@@ -48,11 +49,11 @@ const Column = ({ column, addNewCard, deleteColumn }) => {
           bgcolor: 'none'
         }}>
         {/* header column */}
-        <HeaderColumn deleteColumn={deleteColumn} column={column} />
+        <HeaderColumn column={column} />
         {/* cards column */}
         <ListCard key={column?._id} cards={cards} />
         {/* footer column */}
-        <FooterColumn column={column} addNewCard={addNewCard} />
+        <FooterColumn column={column} />
       </Box>
     </div>
   )
