@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material'
 
 // project imports
-import { SET_MODE } from '~/redux/customization/customizationSlice'
+import { SET_MODE } from '~/redux/Customization/customizationSlice'
 import SubCard from '~/ui-component/cards/SubCard'
 
 // ==============================|| THEME TAB ||============================== //

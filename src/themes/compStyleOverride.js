@@ -26,7 +26,7 @@ export default function componentStyleOverrides(theme) {
       styleOverrides: {
         root: {
           fontWeight: 500,
-          borderRadius: '4px'
+          borderRadius: `${theme?.customization?.borderRadius}px`
         }
       }
     },
@@ -99,13 +99,6 @@ export default function componentStyleOverrides(theme) {
         root: {
           color: theme.darkTextPrimary,
           minWidth: '36px'
-        }
-      }
-    },
-    MuiListItemText: {
-      styleOverrides: {
-        primary: {
-          color: theme.textDark
         }
       }
     },

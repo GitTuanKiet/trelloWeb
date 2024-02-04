@@ -41,6 +41,20 @@ const pages = {
           type: 'item',
           url: '/pages/forgot-password/forgot-password3',
           target: true
+        },
+        {
+          id: 'update-profile3',
+          title: 'Update Profile',
+          type: 'item',
+          url: '/pages/update-profile/update-profile3',
+          target: true
+        },
+        {
+          id: 'update-password3',
+          title: 'Update Password',
+          type: 'item',
+          url: '/pages/update-password/update-password3',
+          target: true
         }
       ]
     }

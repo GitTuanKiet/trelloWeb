@@ -4,8 +4,8 @@ import { lazy } from 'react'
 import MainLayout from '~/layout/MainLayout'
 import Loadable from '~/ui-component/Loadable'
 
-// dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')))
+// board routing
+const Board = Loadable(lazy(() => import('~/views/board/_id')))
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('~/views/utilities/Typography')))
@@ -14,25 +14,26 @@ const UtilsShadow = Loadable(lazy(() => import('~/views/utilities/Shadow')))
 const UtilsMaterialIcons = Loadable(lazy(() => import('~/views/utilities/MaterialIcons')))
 const UtilsTablerIcons = Loadable(lazy(() => import('~/views/utilities/TablerIcons')))
 
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('~/views/sample-page')))
-
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: '/',
+  path: '',
   element: <MainLayout />,
   children: [
     {
-      path: '/',
-      element: <DashboardDefault />
+      path: '',
+      element: <Board />
     },
     {
-      path: 'dashboard',
+      path: 'board',
       children: [
         {
-          path: 'default',
-          element: <DashboardDefault />
+          path: '',
+          element: <Board />
+        },
+        {
+          path: ':id',
+          element: <Board />
         }
       ]
     },
@@ -80,10 +81,6 @@ const MainRoutes = {
           element: <UtilsMaterialIcons />
         }
       ]
-    },
-    {
-      path: 'sample-page',
-      element: <SamplePage />
     }
   ]
 }

@@ -4,6 +4,7 @@ import { cloneDeep, isEmpty } from 'lodash'
 import { sortArray } from '~/utils/sorts'
 import { generatePlaceholder } from '~/utils/formatters'
 import { setLoading, setError, setBoard } from './boardSlice'
+import { isAuth } from '~/utils/auth'
 
 export const fetchDetailsBoards = createAsyncThunk('board/fetchDetailsBoards', async (boardId, { dispatch }) => {
   try {
@@ -75,6 +76,7 @@ export const newColumn = (board, data) => async (dispatch) => {
 
 export const destroyColumn = (board, columnId) => async (dispatch) => {
   try {
+    if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
     const cloneBoard = cloneDeep(board)
     cloneBoard.columns = cloneBoard.columns.filter((column) => column._id !== columnId)

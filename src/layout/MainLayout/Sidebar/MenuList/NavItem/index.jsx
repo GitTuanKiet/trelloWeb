@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles'
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material'
 
 // project imports
-import { MENU_OPEN, SET_MENU } from '~/redux/customization/customizationSlice'
+import { MENU_OPEN, SET_MENU } from '~/redux/Customization/customizationSlice'
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'

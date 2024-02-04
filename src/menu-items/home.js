@@ -4,22 +4,22 @@ import { IconDashboard } from '@tabler/icons-react'
 // constant
 const icons = { IconDashboard }
 
-// ==============================|| DASHBOARD MENU ITEMS ||============================== //
+// ==============================|| BOARD MENU ITEMS ||============================== //
 
-const dashboard = {
-  id: 'dashboard',
-  title: 'Dashboard',
+const board = {
+  id: 'board',
+  title: 'Board',
   type: 'group',
   children: [
     {
-      id: 'default',
-      title: 'Dashboard',
+      id: 'board',
+      title: 'Board',
       type: 'item',
-      url: '/dashboard/default',
+      url: '/board',
       icon: icons.IconDashboard,
       breadcrumbs: false
     }
   ]
 }
 
-export default dashboard
+export default board

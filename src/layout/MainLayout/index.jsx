@@ -12,7 +12,7 @@ import Sidebar from './Sidebar'
 import Customization from '../Customization'
 import navigation from '~/menu-items'
 import { drawerWidth } from '~/utils/constants'
-import { SET_MENU } from '~/redux/customization/customizationSlice'
+import { SET_MENU } from '~/redux/Customization/customizationSlice'
 
 // assets
 import { IconChevronRight } from '@tabler/icons-react'
@@ -55,6 +55,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
   const theme = useTheme()
+
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'))
   // Handle left drawer
   const leftDrawerOpened = useSelector((state) => state.customization.opened)
@@ -73,8 +74,10 @@ const MainLayout = () => {
         color="inherit"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.default,
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+          bgcolor: theme.palette.background.paper,
+          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
+          boxShadow: leftDrawerOpened ? theme.shadows[15] : 'none',
+          borderBottom: (theme) => `1px solid ${theme.palette.divider}`
         }}
       >
         <Toolbar>

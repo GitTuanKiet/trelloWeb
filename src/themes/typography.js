@@ -71,7 +71,7 @@ export default function themeTypography(theme) {
       '& > label': {
         top: 23,
         left: 0,
-        color: theme.grey500,
+        color: theme.textDark,
         '&[data-shrink="false"]': {
           top: 5
         }
@@ -129,5 +129,5 @@ export default function themeTypography(theme) {
       height: '44px',
       fontSize: '1.5rem'
     }
-  };
+  }
 }

@@ -26,6 +26,7 @@ export const theme = (customization) => {
   }
 
   const themeOptions = {
+    customization,
     direction: 'ltr',
     useColorSchemes: themePalette(themeOption),
     mixins: {
