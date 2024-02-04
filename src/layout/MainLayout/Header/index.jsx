@@ -9,6 +9,7 @@ import LogoSection from '../LogoSection'
 import SearchSection from './SearchSection'
 import ProfileSection from './ProfileSection'
 import NotificationSection from './NotificationSection'
+import Mode from '~/components/Mode'
 
 // assets
 import { IconMenu2 } from '@tabler/icons-react'
@@ -17,6 +18,9 @@ import { IconMenu2 } from '@tabler/icons-react'
 
 const Header = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme()
+
+  const user = JSON.parse(localStorage.getItem('user'))
+
 
   return (
     <>
@@ -61,8 +65,9 @@ const Header = ({ handleLeftDrawerToggle }) => {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification & profile */}
+      <Mode />
       <NotificationSection />
-      <ProfileSection />
+      {user && <ProfileSection user={user} />}
     </>
   )
 }

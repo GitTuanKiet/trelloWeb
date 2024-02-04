@@ -6,9 +6,7 @@ import { mockData } from '~/apis/mock-data'
 export const initialState = {
   loading: false,
   error: null,
-  board: {
-    ...mockData.board
-  }
+  ...mockData
 }
 
 const boardSlice = createSlice({

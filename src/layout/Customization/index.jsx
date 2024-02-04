@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // types
 import PropTypes from 'prop-types'
@@ -28,8 +28,8 @@ import {
 import SubCard from '~/ui-component/cards/SubCard'
 import AnimateButton from '~/ui-component/extended/AnimateButton'
 import FontTab from './FontTab'
-import ThemeTab from './themeTab'
-import { RESET_CUSTOMIZATION } from '~/redux/customization/customizationSlice'
+import ThemeTab from './ThemeTab'
+import { RESET_CUSTOMIZATION } from '~/redux/Customization/customizationSlice'
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar'

@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, forwardRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -35,29 +35,33 @@ import MainCard from '~/ui-component/cards/MainCard'
 import Transitions from '~/ui-component/extended/Transitions'
 import UpgradePlanCard from './UpgradePlanCard'
 import User1 from '~/assets/images/users/user-round.svg'
+import { logout } from '~/redux/Auth/slice'
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons-react'
 
 // ==============================|| PROFILE MENU ||============================== //
 
-const ProfileSection = () => {
+const ProfileSection = forwardRef(( { user }, ref) => {
   const theme = useTheme()
   const customization = useSelector((state) => state.customization)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [sdm, setSdm] = useState(true)
   const [value, setValue] = useState('')
   const [notification, setNotification] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [open, setOpen] = useState(false)
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/pages/login/login3')
+  }
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null)
-  const handleLogout = async () => {
-    console.log('Logout')
-  }
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -88,7 +92,7 @@ const ProfileSection = () => {
   }, [open])
 
   return (
-    <>
+    <div ref={ref}>
       <Chip
         sx={{
           height: '48px',
@@ -157,12 +161,12 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
+                        <Typography variant="h4">Hello,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {user.firstName + ' ' + user.lastName}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">{user.email}</Typography>
                     </Stack>
                     <OutlinedInput
                       sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
@@ -302,8 +306,8 @@ const ProfileSection = () => {
           </Transitions>
         )}
       </Popper>
-    </>
+    </div>
   )
-}
+})
 
 export default ProfileSection

@@ -1,9 +1,15 @@
 import axios from 'axios'
 import { API_HOST } from '~/utils/constants'
+import { Authorization } from './authApi'
 
 // Boards
 export const fetchDetailsBoardsApi = async (boardId) => {
   const response = await axios.get(`${API_HOST}/boards/${boardId}`)
+  return response.data
+}
+
+export const addBoardApi = async (data) => {
+  const response = await axios.post(`${API_HOST}/boards/create`, data, Authorization())
   return response.data
 }
 
