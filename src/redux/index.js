@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import boardSlice from './Board/boardSlice'
-import customizationSlice from './Customization/customizationSlice'
+import boardSlice from './board/boardSlice'
+import customizationSlice from './customization/customizationSlice'
 import authSlice from './Auth/slice'
 
 export const store = configureStore({

@@ -12,7 +12,7 @@ import Sidebar from './Sidebar'
 import Customization from '../Customization'
 import navigation from '~/menu-items'
 import { drawerWidth } from '~/utils/constants'
-import { SET_MENU } from '~/redux/Customization/customizationSlice'
+import { SET_MENU } from '~/redux/customization/customizationSlice'
 
 // assets
 import { IconChevronRight } from '@tabler/icons-react'

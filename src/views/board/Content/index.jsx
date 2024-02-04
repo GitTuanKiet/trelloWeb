@@ -24,7 +24,7 @@ import {
   setMoveColumn,
   setMoveCardWithoutColumn,
   setMoveCardWithinColumn
-} from '~/redux/Board/boardSlice'
+} from '~/redux/board/boardSlice'
 import { useDispatch } from 'react-redux'
 
 const Content = ({ board, addNewColumn, addNewCard, deleteColumn }) => {

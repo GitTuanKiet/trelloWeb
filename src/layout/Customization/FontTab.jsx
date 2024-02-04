@@ -14,7 +14,7 @@ import {
 
 // project imports
 import SubCard from '~/ui-component/cards/SubCard'
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '~/redux/Customization/customizationSlice'
+import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '~/redux/customization/customizationSlice'
 import { fontFamilies } from '~/utils/constants'
 
 // concat 'px'

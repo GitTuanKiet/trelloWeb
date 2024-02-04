@@ -29,7 +29,7 @@ import SubCard from '~/ui-component/cards/SubCard'
 import AnimateButton from '~/ui-component/extended/AnimateButton'
 import FontTab from './FontTab'
 import ThemeTab from './ThemeTab'
-import { RESET_CUSTOMIZATION } from '~/redux/Customization/customizationSlice'
+import { RESET_CUSTOMIZATION } from '~/redux/customization/customizationSlice'
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar'
