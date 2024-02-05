@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -27,6 +28,7 @@ import { updateProfile } from '~/redux/Auth/thunk'
 
 const UpdateProfile = ({ ...others }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const theme = useTheme()
   const scriptedRef = useScriptRef()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
@@ -36,8 +38,9 @@ const UpdateProfile = ({ ...others }) => {
   useEffect(() => {
     if (user) {
       toast.success('Update Successfully ! You are ' + user.firstName + ' ' + user.lastName)
+      navigate('/board')
     }
-  }, [user])
+  }, [user, navigate])
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     if (values.firstName === userLocal.firstName && values.lastName === userLocal.lastName && values.email === userLocal.email) {
@@ -46,18 +49,14 @@ const UpdateProfile = ({ ...others }) => {
     }
     try {
       if (scriptedRef.current) {
-        if (values.email === userLocal.email) {
-          delete values.email
-        }
-        if (values.firstName === userLocal.firstName) {
-          delete values.firstName
-        }
-        if (values.lastName === userLocal.lastName) {
-          delete values.lastName
-        }
-        setStatus({ success: true })
-        setSubmitting(false)
-        dispatch(updateProfile(values))
+        dispatch(updateProfile(values)).then((response) => {
+          if (response.payload) {
+            toast.error(response.payload)
+            return
+          }
+          setStatus({ success: true })
+          setSubmitting(false)
+        })
       }
     } catch (err) {
       if (scriptedRef.current) {

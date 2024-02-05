@@ -76,10 +76,15 @@ const FirebaseRegister = ({ ...others }) => {
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     try {
       if (scriptedRef.current) {
-        setStatus({ success: true })
-        setSubmitting(false)
-        dispatch(register(values))
-        navigate('/board')
+        dispatch(register(values)).then((response) => {
+          if (response.payload) {
+            toast.error(response.payload)
+            return
+          }
+          setStatus({ success: true })
+          setSubmitting(false)
+          navigate('/pages/login/login3')
+        })
       }
     } catch (err) {
       if (scriptedRef.current) {

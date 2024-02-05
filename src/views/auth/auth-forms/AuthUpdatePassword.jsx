@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 // material-ui
 import {
@@ -33,7 +34,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 const AuthUpdatePassword = ({ ...others }) => {
-
+  const navigate = useNavigate()
   const theme = useTheme()
   const scriptedRef = useScriptRef()
   const dispatch = useDispatch()
@@ -80,9 +81,16 @@ const AuthUpdatePassword = ({ ...others }) => {
             return
           }
           if (scriptedRef.current) {
-            setStatus({ success: true })
-            setSubmitting(true)
-            dispatch(updatePassword(values))
+            dispatch(updatePassword(values)).then((response) => {
+              if (response.payload.message) {
+                setStatus({ success: true })
+                setSubmitting(true)
+                toast.success('Password updated')
+                navigate('/board')
+                return
+              }
+              toast.error(response.payload)
+            })
           }
         } catch (err) {
           if (scriptedRef.current) {

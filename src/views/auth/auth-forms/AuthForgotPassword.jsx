@@ -30,16 +30,10 @@ const FirebaseForgotPassword = ({ ...others }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { token, user, error } = useSelector((state) => state.auth)
+  const { token, user } = useSelector((state) => state.auth)
 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
   const customization = useSelector((state) => state.customization)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error)
-    }
-  }, [error])
 
   useEffect(() => {
     if (token && user) {
@@ -89,9 +83,15 @@ const FirebaseForgotPassword = ({ ...others }) => {
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
-              dispatch(forgotPassword(values))
-              setStatus({ success: true })
-              setSubmitting(false)
+              dispatch(forgotPassword(values)).then((response) => {
+                if (response.payload) {
+                  toast.error(response.payload)
+                  return
+                }
+                setStatus({ success: false })
+                setErrors({ submit: response.payload })
+                setSubmitting(false)
+              })
             } catch (err) {
               setStatus({ success: false })
               setErrors({ submit: err.message })

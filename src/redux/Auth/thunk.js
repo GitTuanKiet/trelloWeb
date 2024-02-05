@@ -87,10 +87,11 @@ export const updatePassword = createAsyncThunk('auth/updatePassword', async (dat
     dispatch(setLoading(true))
     const result = await updatePasswordApi(data)
 
-    if (result.payload) {
-      return result.payload
+    if (result.error) {
+      return result.error
     }
 
+    return result
   } catch (error) {
     dispatch(setError(error.message))
   } finally {

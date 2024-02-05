@@ -44,7 +44,7 @@ import { jwtDecode } from 'jwt-decode'
 const FirebaseLogin = ({ ...others }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { token, user, error } = useSelector((state) => state.auth)
+  const { token, user } = useSelector((state) => state.auth)
   const theme = useTheme()
   const scriptedRef = useScriptRef()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
@@ -63,12 +63,6 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error)
-    }
-  }, [error])
 
   useEffect(() => {
     if (token && user) {
@@ -150,9 +144,15 @@ const FirebaseLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             if (scriptedRef.current) {
-              setStatus({ success: true })
-              setSubmitting(false)
-              dispatch(login(values))
+              dispatch(login(values)).then((response) => {
+                if (response.payload) {
+                  toast.error(response.payload)
+                  return
+                }
+                setStatus({ success: false })
+                setErrors({ submit: response.payload })
+                setSubmitting(false)
+              })
             }
           } catch (err) {
             if (scriptedRef.current) {
