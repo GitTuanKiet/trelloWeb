@@ -4,7 +4,7 @@ const config = {
   mode: 'system', // light, dark, system
   fontFamily: 'Roboto',
   borderRadius: 12,
-  defaultId: 'default'
+  defaultId: 'board-id-01'
 }
 
 export default config

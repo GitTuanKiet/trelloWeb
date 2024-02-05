@@ -14,13 +14,12 @@ const _ID = () => {
   const { id } = useParams()
 
   useEffect(() => {
-    const boardId = id ? id : config.defaultId
+    let boardId = id ? id : config.defaultId
+    if (!listBoard.find((board) => board._id === boardId)) {
+      boardId = listBoard[0]._id
+    }
     dispatch(fetchDetailsBoards(boardId))
-  }, [dispatch, id])
-
-  if (!listBoard?.map((board) => board._id).includes(id)) {
-    return <div>Board not found</div>
-  }
+  }, [dispatch, id, listBoard])
 
   return (
     <>

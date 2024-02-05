@@ -4,6 +4,7 @@ import { setLoading, setError, setToken, setUser, setList } from './slice'
 import { addBoardApi, destroyBoardApi } from '~/apis'
 import { isAuth } from '~/utils/auth'
 import { cloneDeep } from 'lodash'
+import { mockData } from '~/apis/mock-data'
 
 export const login = createAsyncThunk('auth/login', async (data, { dispatch }) => {
   try {
@@ -74,6 +75,7 @@ export const fetchListBoard = createAsyncThunk('boardBar/fetchListBoard', async 
   try {
     dispatch(setLoading(true))
     const response = await fetchListBoardApi()
+    if (response.length === 0) response.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
     dispatch(setList(response))
   } catch (error) {
     dispatch(setError(error.message))
@@ -106,6 +108,7 @@ export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boa
     const clone = cloneDeep(getState().auth.listBoard)
     const index = clone.findIndex((board) => board._id === boardId)
     clone.splice(index, 1)
+    if (clone.length === 0) clone.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
     dispatch(setList(clone))
     return result
   } catch (error) {

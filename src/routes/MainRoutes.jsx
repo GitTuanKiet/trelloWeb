@@ -26,11 +26,16 @@ const MainRoutes = {
     },
     {
       path: 'board',
-      element: <Board />
-    },
-    {
-      path: 'board/:id',
-      element: <Board />
+      children: [
+        {
+          path: '',
+          element: <Board />
+        },
+        {
+          path: ':id',
+          element: <Board />
+        }
+      ]
     },
     {
       path: 'utils',

@@ -15,7 +15,6 @@ const HeaderColumn = ({ column }) => {
 
   const dispatch = useDispatch()
 
-  const board = useSelector((state) => state.board)
   const { loading, error } = useSelector((state) => state.board)
 
 
