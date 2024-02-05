@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { updateBoardApi, setMoveCardWithoutColumnApi, updateColumnApi } from '~/apis'
-import { cloneDeep } from 'lodash'
 import { mockData } from '~/apis/mock-data'
 
 export const initialState = {
   loading: false,
   error: null,
-  ...mockData
+  ...mockData.board
 }
 
 const boardSlice = createSlice({
@@ -14,7 +13,11 @@ const boardSlice = createSlice({
   initialState: initialState,
   reducers: {
     setBoard: (state, action) => {
-      state.board = action.payload
+      state.loading = false
+      Object.assign(state, action.payload)
+    },
+    setColumns: (state, action) => {
+      Object.assign(state.columns, action.payload)
       state.loading = false
     },
     setLoading: (state, action) => {
@@ -26,31 +29,23 @@ const boardSlice = createSlice({
     },
     setMoveColumn: (state, action) => {
       const { newColumnOrderIds, orderedColumns } = action.payload
-      const cloneBoard = cloneDeep(state.board)
-      cloneBoard.columnOrderIds = newColumnOrderIds
-      cloneBoard.columns = orderedColumns
 
-      state.board = cloneBoard
+      Object.assign(state, { columnOrderIds: newColumnOrderIds, columns: orderedColumns })
 
-      updateBoardApi(cloneBoard._id, { columnOrderIds: newColumnOrderIds })
+      updateBoardApi(state._id, { columnOrderIds: newColumnOrderIds })
     },
     setMoveCardWithinColumn: (state, action) => {
       const { newCardOrderIds, orderedCards, columnId } = action.payload
-      const cloneBoard = cloneDeep(state.board)
-      const column = cloneBoard.columns.find((column) => column._id === columnId)
-      column.cardOrderIds = newCardOrderIds
-      column.cards = orderedCards
 
-      state.board = cloneBoard
+      const column = state.columns.find((column) => column._id === columnId)
+      Object.assign(column, { cardOrderIds: newCardOrderIds, cards: orderedCards })
 
-      updateColumnApi(cloneBoard._id, { _id: columnId, cardOrderIds: newCardOrderIds })
+      updateColumnApi(state._id, { _id: columnId, cardOrderIds: newCardOrderIds })
     },
     setMoveCardWithoutColumn: (state, action) => {
       const { newColumns, cardId, prevColumnId, nextColumnId } = action.payload
-      const cloneBoard = cloneDeep(state.board)
-      cloneBoard.columns = newColumns
 
-      state.board = cloneBoard
+      Object.assign(state, { columns: newColumns })
 
       let prevCardOrderIds = newColumns.find((column) => column._id === prevColumnId).cardOrderIds.filter((card) => !card.includes('-placeholder'))
       const nextCardOrderIds = newColumns.find((column) => column._id === nextColumnId).cardOrderIds
@@ -68,6 +63,7 @@ const boardSlice = createSlice({
 export default boardSlice.reducer
 export const {
   setBoard,
+  setColumns,
   setLoading,
   setError,
   setMoveColumn,

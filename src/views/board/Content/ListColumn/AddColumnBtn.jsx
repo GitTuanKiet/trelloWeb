@@ -7,7 +7,8 @@ import { newColumn } from '~/redux/board/boardThunk'
 
 const AddColumnBtn = () => {
   const dispatch = useDispatch()
-  const { board, loading, error } = useSelector((state) => state.board)
+  const board = useSelector((state) => state.board)
+  const { loading, error } = useSelector((state) => state.board)
   const [showAddColumnForm, setShowAddColumnForm] = useState(false)
   const settingShow = () => setShowAddColumnForm(!showAddColumnForm)
 

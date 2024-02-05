@@ -3,14 +3,19 @@ import { fetchDetailsBoardsApi, addNewCardApi, addNewColumnApi, destroyColumnApi
 import { cloneDeep, isEmpty } from 'lodash'
 import { sortArray } from '~/utils/sorts'
 import { generatePlaceholder } from '~/utils/formatters'
-import { setLoading, setError, setBoard } from './boardSlice'
+import { setLoading, setError, setBoard, setColumns } from './boardSlice'
 import { isAuth } from '~/utils/auth'
 import config from '~/config'
+import { mockData } from '~/apis/mock-data'
 
 export const fetchDetailsBoards = createAsyncThunk('board/fetchDetailsBoards', async (boardId, { dispatch }) => {
-  if ( boardId === config.defaultId ) return
   try {
     dispatch(setLoading(true))
+
+    if (boardId === config.defaultId) {
+      dispatch(setBoard(mockData.board))
+      return
+    }
 
     const board = await fetchDetailsBoardsApi(boardId)
 
@@ -35,9 +40,9 @@ export const fetchDetailsBoards = createAsyncThunk('board/fetchDetailsBoards', a
 export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch, getState }) => {
   try {
     dispatch(setLoading(true))
-    const newCard = await addNewCardApi(getState().board.board._id, data)
-    const cloneBoard = cloneDeep(getState().board.board)
-    const columnAdd = cloneBoard.columns.find((column) => column._id === data.columnId)
+    const newCard = await addNewCardApi(getState().board._id, data)
+    const cloneColumns = cloneDeep(getState().board.columns)
+    const columnAdd = cloneColumns.find((column) => column._id === data.columnId)
     if (columnAdd) {
       if (columnAdd.cards[0]?._id.includes('-placeholder')) {
         columnAdd.cards = [newCard]
@@ -47,7 +52,7 @@ export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch
         columnAdd.cards.push(newCard)
       }
     }
-    dispatch(setBoard(cloneBoard))
+    dispatch(setColumns(cloneColumns))
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
@@ -58,8 +63,8 @@ export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch
 export const newColumn = createAsyncThunk('board/newColumn', async (data, { dispatch, getState }) => {
   try {
     dispatch(setLoading(true))
-    const newColumn = await addNewColumnApi(getState().board.board._id, data)
-    const cloneBoard = cloneDeep(getState().board.board)
+    const newColumn = await addNewColumnApi(getState().board._id, data)
+    const cloneBoard = cloneDeep(getState().board)
     if (newColumn) {
       newColumn.cards = [generatePlaceholder(newColumn)]
       newColumn.cardOrderIds = [generatePlaceholder(newColumn)._id]
@@ -78,11 +83,11 @@ export const destroyColumn = createAsyncThunk('board/destroyColumn', async (colu
   try {
     if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
-    const cloneBoard = cloneDeep(getState().board.board)
+    const cloneBoard = cloneDeep(getState().board)
     cloneBoard.columns = cloneBoard.columns.filter((column) => column._id !== columnId)
     cloneBoard.columnOrderIds = cloneBoard.columns.map((column) => column._id)
     dispatch(setBoard(cloneBoard))
-    const result = await destroyColumnApi(getState().board.board._id)
+    const result = await destroyColumnApi(getState().board._id)
     return result
   } catch (error) {
     dispatch(setError(error.message))

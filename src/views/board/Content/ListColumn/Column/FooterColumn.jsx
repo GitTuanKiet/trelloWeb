@@ -15,7 +15,8 @@ import { newCard } from '~/redux/board/boardThunk'
 
 const FooterColumn = ({ column }) => {
   const dispatch = useDispatch()
-  const { board, loading, error } = useSelector((state) => state.board)
+  const board = useSelector((state) => state.board)
+  const { loading, error } = useSelector((state) => state.board)
 
   const [images, setImages] = useState([])
   const [openDialog, setOpenDialog] = useState(false)

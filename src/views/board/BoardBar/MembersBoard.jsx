@@ -31,7 +31,7 @@ const avatarGroupSx = {
 // ===========================|| BOARD BAR - MEMBERS ||=========================== //
 
 const MembersBoard = ({ isLoading }) => {
-  const { board } = useSelector((state) => state.board)
+  const board = useSelector((state) => state.board)
 
   const handleAddMember = () => {
     console.info('You clicked the Add btn.', board)
