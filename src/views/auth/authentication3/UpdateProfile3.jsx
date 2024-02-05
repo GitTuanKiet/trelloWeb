@@ -56,6 +56,13 @@ const UpdateProfile = () => {
                   <Grid item xs={12}>
                     <AuthUpdateProfile />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Grid item container direction="column" alignItems="center" xs={12}>
+                      <Typography component={Link} to="/board" sx={{ textDecoration: 'none' }}>
+                        Home Board
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </AuthCardWrapper>
             </Grid>

@@ -85,7 +85,7 @@ const AuthUpdatePassword = ({ ...others }) => {
               if (response.payload.message) {
                 setStatus({ success: true })
                 setSubmitting(true)
-                toast.success('Password updated')
+                toast.success(response.payload.message)
                 navigate('/board')
                 return
               }

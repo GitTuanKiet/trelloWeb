@@ -54,6 +54,13 @@ const UpdatePassword = () => {
                   <Grid item xs={12}>
                     <AuthUpdatePassword />
                   </Grid>
+                  <Grid item>
+                    <Grid container justifyContent={matchDownSM ? 'center' : 'flex-end'}>
+                      <Link to="/board" variant="subtitle2">
+                              Back to home
+                      </Link>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </AuthCardWrapper>
             </Grid>

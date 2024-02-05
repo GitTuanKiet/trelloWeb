@@ -26,35 +26,35 @@ const pages = {
           title: 'Login',
           type: 'item',
           url: '/pages/login/login3',
-          target: true
+          target: false
         },
         {
           id: 'register3',
           title: 'Register',
           type: 'item',
           url: '/pages/register/register3',
-          target: true
+          target: false
         },
         {
           id: 'forgot-password3',
           title: 'Forgot Password',
           type: 'item',
           url: '/pages/forgot-password/forgot-password3',
-          target: true
+          target: false
         },
         {
           id: 'update-profile3',
           title: 'Update Profile',
           type: 'item',
           url: '/pages/update-profile/update-profile3',
-          target: true
+          target: false
         },
         {
           id: 'update-password3',
           title: 'Update Password',
           type: 'item',
           url: '/pages/update-password/update-password3',
-          target: true
+          target: false
         }
       ]
     }
