@@ -2,30 +2,31 @@ import { Button, InputBase } from '@mui/material'
 import { AddBox as AddBoxIcon } from '@mui/icons-material'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { newColumn } from '~/redux/board/boardThunk'
 
 const AddColumnBtn = () => {
   const dispatch = useDispatch()
-  const board = useSelector((state) => state.board)
-  const { loading, error } = useSelector((state) => state.board)
   const [showAddColumnForm, setShowAddColumnForm] = useState(false)
   const settingShow = () => setShowAddColumnForm(!showAddColumnForm)
 
-  const handleAddColumn = (e) => {
+  const handleAddColumn = async (e) => {
     if (e.target.value === '') return toast.error('Please enter column title')
+
     try {
-      if (loading) {
-        toast.error('Please wait, loading...')
-        return
-      } else if (error) {
-        toast.error(error)
-        return
-      } else {
-        dispatch(newColumn({ title: e.target.value }))
-        toast.success('Add new column success')
-        settingShow()
-      }
+
+
+      dispatch(newColumn({ title: e.target.value })).then((result) => {
+        if (result.payload) {
+          toast.error(result.payload)
+          return
+        }
+        toast.success('Add column' + e.target.value + ' success')
+      }).catch((error) => {
+        toast.error('Add column failed' + error)
+      })
+
+      settingShow()
     } catch (error) {
       toast.error(error)
     }

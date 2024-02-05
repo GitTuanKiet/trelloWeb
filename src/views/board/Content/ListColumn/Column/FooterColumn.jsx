@@ -9,14 +9,12 @@ import {
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import FileUploader from '~/components/imageUpload'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { newCard } from '~/redux/board/boardThunk'
 
 
 const FooterColumn = ({ column }) => {
   const dispatch = useDispatch()
-  const board = useSelector((state) => state.board)
-  const { loading, error } = useSelector((state) => state.board)
 
   const [images, setImages] = useState([])
   const [openDialog, setOpenDialog] = useState(false)
@@ -31,18 +29,23 @@ const FooterColumn = ({ column }) => {
       description: formData.get('description'),
       cover: images
     }
+
+    if (data.title === '') return toast.error('Please enter card title')
+
     try {
-      if (loading) {
-        toast.error('Please wait, loading...')
-        return
-      } else if (error) {
-        toast.error(error)
-        return
-      } else {
-        dispatch(newCard({ columnId:column?._id, ...data }))
-        toast.success('Add new card success')
-        showDialog()
-      }
+
+
+      dispatch(newCard({ columnId: column?._id, ...data })).then((result) => {
+        if (result.payload) {
+          toast.error(result.payload)
+          return
+        }
+        toast.success('Add card' + data.title + ' success')
+      }).catch((error) => {
+        toast.error('Add card failed' + error)
+      })
+
+      showDialog()
     } catch (error) {
       toast.error(error)
     }

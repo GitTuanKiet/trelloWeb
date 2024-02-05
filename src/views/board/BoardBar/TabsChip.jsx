@@ -74,12 +74,14 @@ const TabsChip = () => {
   const { boardId } = useParams()
   const [selected, setSelected] = useState(boardId)
 
-  const { listBoard, loading, error } = useSelector((state) => state.auth)
+  const { listBoard, loading } = useSelector((state) => state.auth)
 
   const [list, setList] = useState(listBoard)
 
   const handleDelete = async ({ id, title }) => {
     try {
+
+
       await confirm({
         title: 'Are you sure to delete ' + title + '?',
         description: 'This will delete all cards in ' + title,
@@ -88,20 +90,21 @@ const TabsChip = () => {
         dialogProps: { maxWidth: 'sm' },
         confirmationButtonProps: { variant: 'contained', color: 'error' },
         cancellationButtonProps: { variant: 'outlined' }
+      }).then(() => {
+        dispatch(destroyBoard(id)).then((result) => {
+          if (result.payload) {
+            toast.error(result.payload)
+            return
+          }
+          toast.success('Delete ' + title + ' success')
+        }).catch((error) => {
+          toast.error('Delete ' + title + ' failed: ' + error)
+        })
+
+      }).catch(() => {
+        toast.info('You canceled delete ' + title)
       })
 
-      if (loading) {
-        toast.error('Please wait, still loading')
-        return
-      }
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      dispatch(destroyBoard(id))
-      toast.success('Delete ' + title + ' success')
     } catch (error) {
       toast.error('An error occurred: ' + error.message)
     }
@@ -109,8 +112,10 @@ const TabsChip = () => {
 
   const handleChange = ({ id, title }) => {
     if (selected === id) return
-    toast.success(`You changed to ${title}`)
-    setSelected(id)
+    else {
+      toast.success(`You changed to ${title}`)
+      setSelected(id)
+    }
     return Navigate(`/board/${id}`)
   }
 
@@ -119,17 +124,30 @@ const TabsChip = () => {
     const data = new FormData(e.currentTarget)
     const title = data.get('title')
     const description = data.get('description')
-    if (loading) {
-      toast.error('Please wait, still loading')
+
+    if (!title) {
+      toast.error('Please enter board title')
       return
-    } else if (error) {
-      toast.error(error)
-      return
-    } else {
-      dispatch(addBoard({ title, description }))
-      showDialog()
-      toast.success('Add ' + title + ' success')
     }
+
+    if (!description) {
+      toast.error('Please enter board description')
+      return
+    }
+
+
+    dispatch(addBoard({ title, description })).then((result) => {
+      console.log('🚀 ~ dispatch ~ result:', result)
+      if (result.payload) {
+        toast.error(result.payload)
+        return
+      }
+      toast.success('Add board ' + title + ' success')
+    }).catch((error) => {
+      toast.error('Add board ' + title + ' failed: ' + error)
+    })
+
+    showDialog()
   }
 
   useEffect(() => {
@@ -144,22 +162,26 @@ const TabsChip = () => {
     <>
       <Stack direction="row" spacing={gridSpacing}>
         {loading ? (<SkeletonChip />) : (
-          list.length > 0 && list.map((board, index) => (
-            <ChipWrapper
-              key={index}
-              title={board.title}
-              tooltip={board.description}
-              handleDelete={() => handleDelete({ id :board._id, title : board.title })}
-              handleClick={() => handleChange({ id : board._id, title : board.title })}
-              sx={{
-                backgroundColor: theme.palette.primary.dark,
-                color: '#fff',
-                '& .MuiChip-icon': {
-                  color: '#fff'
-                }
-              }}
-            />)
-          )
+          list.length > 0 && list.map((board, index) => {
+            const isSelect = selected === board._id
+            return (
+              <ChipWrapper
+                key={index}
+                title={board.title}
+                tooltip={board.description}
+                handleDelete={() => handleDelete({ id :board._id, title : board.title })}
+                handleClick={() => handleChange({ id : board._id, title : board.title })}
+                sx={{
+                  backgroundColor: theme.palette.primary.dark,
+                  color: '#fff',
+                  '& .MuiChip-icon': {
+                    color: '#fff'
+                  }
+                }}
+                disabled={isSelect}
+                {...(isSelect && { sx: { backgroundColor: theme.palette.secondary.dark } })}
+              />)
+          })
         )}
         <Chip
           label="Add"

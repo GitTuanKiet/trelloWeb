@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDetailsBoards } from '~/redux/board/boardThunk'
 import { useParams } from 'react-router-dom'
 import config from '~/config'
+import { toast } from 'react-toastify'
 
 const _ID = () => {
   const dispatch = useDispatch()
@@ -30,8 +31,8 @@ const _ID = () => {
         >
           <CircularProgress color="inherit" />
         </Backdrop>}
-      {error && <div>{error}</div>}
       <BoardContent />
+      {error && toast.error(error)}
     </>
 
   )

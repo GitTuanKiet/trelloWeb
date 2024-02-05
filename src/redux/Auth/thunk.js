@@ -10,6 +10,11 @@ export const login = createAsyncThunk('auth/login', async (data, { dispatch }) =
   try {
     dispatch(setLoading(true))
     const response = await loginApi(data)
+
+    if (response.error) {
+      return response.error
+    }
+
     const { token, user } = response
     dispatch(setToken(token))
     dispatch(setUser(user))
@@ -24,6 +29,11 @@ export const register = createAsyncThunk('auth/register', async (data, { dispatc
   try {
     dispatch(setLoading(true))
     const response = await registerApi(data)
+
+    if (response.error) {
+      return response.error
+    }
+
     const { token, user } = response
     dispatch(setToken(token))
     dispatch(setUser(user))
@@ -38,6 +48,11 @@ export const forgotPassword = createAsyncThunk('auth/forgotPassword', async (dat
   try {
     dispatch(setLoading(true))
     const response = await forgotPasswordApi(data)
+
+    if (response.error) {
+      return response.error
+    }
+
     const { token, user } = response
     dispatch(setToken(token))
     dispatch(setUser(user))
@@ -52,6 +67,11 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (data,
   try {
     dispatch(setLoading(true))
     const response = await updateProfileApi(data)
+
+    if (response.error) {
+      return response.error
+    }
+
     dispatch(setUser(response))
   } catch (error) {
     dispatch(setError(error.message))
@@ -63,7 +83,12 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (data,
 export const updatePassword = createAsyncThunk('auth/updatePassword', async (data, { dispatch }) => {
   try {
     dispatch(setLoading(true))
-    await updatePasswordApi(data)
+    const result = await updatePasswordApi(data)
+
+    if (result.payload) {
+      return result.payload
+    }
+
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
@@ -75,6 +100,11 @@ export const fetchListBoard = createAsyncThunk('boardBar/fetchListBoard', async 
   try {
     dispatch(setLoading(true))
     const response = await fetchListBoardApi()
+
+    if (response.error) {
+      return response.error
+    }
+
     if (response.length === 0) response.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
     dispatch(setList(response))
   } catch (error) {
@@ -89,10 +119,14 @@ export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dis
     if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
     const response = await addBoardApi(data)
+
+    if (response.error) {
+      return response.error
+    }
+
     const clone = cloneDeep(getState().auth.listBoard)
     clone.push(response)
     dispatch(setList(clone))
-    return response
   } catch (error) {
     dispatch(setError(error.message))
   } finally {
@@ -105,12 +139,17 @@ export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boa
     if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
     const result = await destroyBoardApi(boardId)
+
+    if (result.payload) {
+      return result.payload
+    }
+
     const clone = cloneDeep(getState().auth.listBoard)
     const index = clone.findIndex((board) => board._id === boardId)
     clone.splice(index, 1)
     if (clone.length === 0) clone.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
     dispatch(setList(clone))
-    return result
+
   } catch (error) {
     dispatch(setError(error.message))
   } finally {

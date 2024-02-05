@@ -19,6 +19,10 @@ export const fetchDetailsBoards = createAsyncThunk('board/fetchDetailsBoards', a
 
     const board = await fetchDetailsBoardsApi(boardId)
 
+    if (board.error) {
+      return board.error
+    }
+
     board.columns = sortArray(board.columns, board.columnOrderIds, '_id')
     board.columns.map((column) => {
       if (isEmpty(column.cards)) {
@@ -41,6 +45,11 @@ export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch
   try {
     dispatch(setLoading(true))
     const newCard = await addNewCardApi(getState().board._id, data)
+
+    if (newCard.error) {
+      return newCard.error
+    }
+
     const cloneColumns = cloneDeep(getState().board.columns)
     const columnAdd = cloneColumns.find((column) => column._id === data.columnId)
     if (columnAdd) {
@@ -64,6 +73,11 @@ export const newColumn = createAsyncThunk('board/newColumn', async (data, { disp
   try {
     dispatch(setLoading(true))
     const newColumn = await addNewColumnApi(getState().board._id, data)
+
+    if (newColumn.error) {
+      return newColumn.error
+    }
+
     const cloneBoard = cloneDeep(getState().board)
     if (newColumn) {
       newColumn.cards = [generatePlaceholder(newColumn)]
@@ -87,8 +101,12 @@ export const destroyColumn = createAsyncThunk('board/destroyColumn', async (colu
     cloneBoard.columns = cloneBoard.columns.filter((column) => column._id !== columnId)
     cloneBoard.columnOrderIds = cloneBoard.columns.map((column) => column._id)
     dispatch(setBoard(cloneBoard))
-    const result = await destroyColumnApi(getState().board._id)
-    return result
+    const result = await destroyColumnApi(getState().board._id, columnId)
+
+    if (result.payload) {
+      return result.payload
+    }
+
   } catch (error) {
     dispatch(setError(error.message))
   } finally {

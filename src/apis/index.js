@@ -58,18 +58,13 @@ export const updateCardApi = async (boardId, data) => {
 }
 
 // delete
-export const destroyColumnApi = async (boardId) => {
-  const response = await axios.delete(`${API_HOST}/columns/${boardId}`, Authorization())
-  return response.data
-}
-
-export const destroyCardApi = async (boardId) => {
-  const response = await axios.delete(`${API_HOST}/cards/${boardId}`, Authorization())
+export const destroyColumnApi = async (boardId, columnId) => {
+  const response = await axios.delete(`${API_HOST}/columns/delete/${boardId}&&${columnId}`, Authorization())
   return response.data
 }
 
 export const destroyBoardApi = async (boardId) => {
-  const response = await axios.delete(`${API_HOST}/boards/${boardId}`, Authorization())
+  const response = await axios.delete(`${API_HOST}/boards/delete/${boardId}`, Authorization())
   return response.data
 }
 

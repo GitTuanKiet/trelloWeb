@@ -15,9 +15,6 @@ const HeaderColumn = ({ column }) => {
 
   const dispatch = useDispatch()
 
-  const { loading, error } = useSelector((state) => state.board)
-
-
   const [anchorEl, setAnchorEl] = useState(null)
 
   const open = Boolean(anchorEl)
@@ -32,24 +29,33 @@ const HeaderColumn = ({ column }) => {
 
   const confirm = useConfirm()
 
-  const handleDeleteColumn = () => {
+  const handleDeleteColumn = async () => {
     try {
-      if (loading) {
-        toast.error('Please wait, loading...')
-        return
-      } else if (error) {
-        toast.error(error)
-        return
-      } else {
-        confirm({ description: 'Are you sure you want to delete this column?' })
-          .then(() => {
-            dispatch(destroyColumn(column?._id))
-            toast.success('Delete column success')
-          })
-          .catch(() => {
-            toast.error('Delete column cancel')
-          })
-      }
+
+
+      await confirm({
+        title: 'Are you sure to delete ' + column?.title + '?',
+        description: 'This will delete all cards in ' + column?.title,
+        confirmationText: 'Delete',
+        cancellationText: 'Cancel',
+        dialogProps: { maxWidth: 'sm' },
+        confirmationButtonProps: { variant: 'contained', color: 'error' },
+        cancellationButtonProps: { variant: 'outlined' }
+      }).then(() => {
+        dispatch(destroyColumn(column?._id)).then((result) => {
+          if (result.payload) {
+            toast.error(result.payload)
+            return
+          }
+          toast.success('Delete ' + column?.title + ' success')
+        }).catch((error) => {
+          toast.error('Delete ' + column?.title + ' failed: ' + error)
+        })
+
+      }).catch(() => {
+        toast.info('You canceled delete ' + column?.title)
+      })
+
     } catch (error) {
       toast.error(error)
     }

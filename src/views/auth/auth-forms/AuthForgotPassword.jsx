@@ -43,8 +43,7 @@ const FirebaseForgotPassword = ({ ...others }) => {
 
   useEffect(() => {
     if (token && user) {
-      toast.success('Password reset email has been sent.')
-      toast.info('New password: ' + user.password)
+      toast.success('Password reset email has been sent! New password: ' + user.password)
       navigate('/pages/login/login3')
     }
   }, [token, user, navigate])
