@@ -1,8 +1,7 @@
 
 import BoardContent from '.'
-import BoardBar from '../BoardBar'
 import { useEffect } from 'react'
-import { Container, CircularProgress, Backdrop } from '@mui/material'
+import { CircularProgress, Backdrop } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDetailsBoards } from '~/redux/board/boardThunk'
 import { useParams } from 'react-router-dom'
@@ -10,13 +9,18 @@ import config from '~/config'
 
 const _ID = () => {
   const dispatch = useDispatch()
-  const { board, loading, error } = useSelector((state) => state.board)
-  const { boardId } = useParams()
-  let id = boardId ? boardId : config.defaultId
+  const { listBoard } = useSelector((state) => state.auth)
+  const { loading, error } = useSelector((state) => state.board)
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(fetchDetailsBoards('65bfd4d75cf0277111250ac0'))
-  }, [dispatch])
+    const boardId = id ? id : config.defaultId
+    dispatch(fetchDetailsBoards(boardId))
+  }, [dispatch, id])
+
+  if (!listBoard?.map((board) => board._id).includes(id)) {
+    return <div>Board not found</div>
+  }
 
   return (
     <>
@@ -27,6 +31,7 @@ const _ID = () => {
         >
           <CircularProgress color="inherit" />
         </Backdrop>}
+      {error && <div>{error}</div>}
       <BoardContent />
     </>
 

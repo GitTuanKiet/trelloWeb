@@ -15,7 +15,9 @@ const HeaderColumn = ({ column }) => {
 
   const dispatch = useDispatch()
 
-  const { board, loading, error } = useSelector((state) => state.board)
+  const board = useSelector((state) => state.board)
+  const { loading, error } = useSelector((state) => state.board)
+
 
   const [anchorEl, setAnchorEl] = useState(null)
 

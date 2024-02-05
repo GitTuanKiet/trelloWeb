@@ -29,8 +29,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Content = () => {
   const dispatch = useDispatch()
-  const { board } = useSelector((state) => state.board)
-  const [columns, setColumns] = useState([])
+  const state = useSelector((state) => state.board.columns)
+  const [columns, setColumns] = useState(state)
   const [type, setType] = useState(null)
   const [data, setData] = useState(null)
   const [id, setId] = useState(null)
@@ -39,8 +39,8 @@ const Content = () => {
   const lastOverId = useRef(null)
 
   useEffect(() => {
-    setColumns(board.columns)
-  }, [board])
+    setColumns(state)
+  }, [state])
 
   const findColumnWithCardId = (cardId) => {
     return columns.find((column) => column?.cards?.map((card) => card?._id)?.includes(cardId))
@@ -230,7 +230,7 @@ const Content = () => {
     >
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12} sx={{ height: (theme) => theme.trello.boardContentHeight }}>
-          <ListColumn key={board?._id} columns={columns} />
+          <ListColumn columns={columns} />
           <DragOverlay dropAnimation={dropAnimation}>
             {!type && null }
             {(type === 'column' && data) && <Column key={id} column={data} />}
