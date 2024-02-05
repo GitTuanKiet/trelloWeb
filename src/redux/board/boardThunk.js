@@ -42,6 +42,7 @@ export const fetchDetailsBoards = createAsyncThunk('board/fetchDetailsBoards', a
 })
 
 export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch, getState }) => {
+  if (!isAuth()) return 'You must be logged in to perform this action'
   try {
     dispatch(setLoading(true))
     const newCard = await addNewCardApi(getState().board._id, data)
@@ -70,6 +71,7 @@ export const newCard = createAsyncThunk('board/newCard', async (data, { dispatch
 })
 
 export const newColumn = createAsyncThunk('board/newColumn', async (data, { dispatch, getState }) => {
+  if (!isAuth()) return 'You must be logged in to perform this action'
   try {
     dispatch(setLoading(true))
     const newColumn = await addNewColumnApi(getState().board._id, data)

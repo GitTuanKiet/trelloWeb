@@ -7,6 +7,7 @@ import { cloneDeep } from 'lodash'
 import { mockData } from '~/apis/mock-data'
 
 export const login = createAsyncThunk('auth/login', async (data, { dispatch }) => {
+  if (isAuth()) return 'You are already logged in'
   try {
     dispatch(setLoading(true))
     const response = await loginApi(data)
@@ -26,6 +27,7 @@ export const login = createAsyncThunk('auth/login', async (data, { dispatch }) =
 })
 
 export const register = createAsyncThunk('auth/register', async (data, { dispatch }) => {
+  if (isAuth()) return 'You are already logged in'
   try {
     dispatch(setLoading(true))
     const response = await registerApi(data)
@@ -64,6 +66,7 @@ export const forgotPassword = createAsyncThunk('auth/forgotPassword', async (dat
 })
 
 export const updateProfile = createAsyncThunk('auth/updateProfile', async (data, { dispatch }) => {
+  if (!isAuth()) return 'You must be logged in to update your profile'
   try {
     dispatch(setLoading(true))
     const response = await updateProfileApi(data)
@@ -81,6 +84,7 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (data,
 })
 
 export const updatePassword = createAsyncThunk('auth/updatePassword', async (data, { dispatch }) => {
+  if (!isAuth()) return 'You must be logged in to update your password'
   try {
     dispatch(setLoading(true))
     const result = await updatePasswordApi(data)

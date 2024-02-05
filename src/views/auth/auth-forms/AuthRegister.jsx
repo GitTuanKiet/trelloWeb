@@ -56,7 +56,7 @@ const FirebaseRegister = ({ ...others }) => {
   const [level, setLevel] = useState()
 
   const googleHandler = async () => {
-    console.error('Register')
+    toast.error('Register')
   }
 
   const handleClickShowPassword = () => {

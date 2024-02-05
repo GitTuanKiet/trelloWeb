@@ -52,7 +52,7 @@ const FirebaseLogin = ({ ...others }) => {
   const [checked, setChecked] = useState(true)
 
   const googleHandler = async () => {
-    console.error('Login')
+    toast.error('Login')
   }
 
   const [showPassword, setShowPassword] = useState(false)

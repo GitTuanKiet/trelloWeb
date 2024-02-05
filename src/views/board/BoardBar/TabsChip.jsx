@@ -137,7 +137,6 @@ const TabsChip = () => {
 
 
     dispatch(addBoard({ title, description })).then((result) => {
-      console.log('🚀 ~ dispatch ~ result:', result)
       if (result.payload) {
         toast.error(result.payload)
         return

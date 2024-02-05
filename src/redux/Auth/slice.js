@@ -3,14 +3,14 @@ import { logoutApi } from '~/apis/authApi'
 import { setTokenJWT, setProfile, removeTokenJWT } from '~/utils/auth'
 import { mockData } from '~/apis/mock-data'
 
-const { _id, title, description } = mockData.board
+const { _id, title, description, slug } = mockData.board
 
 export const initialState = {
   loading: false,
   error: null,
   user: null,
   token: null,
-  listBoard: [{ _id, title, description }]
+  listBoard: [{ _id, title, description, slug }]
 }
 
 const authSlice = createSlice({
