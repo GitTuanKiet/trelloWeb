@@ -7,7 +7,6 @@ import { cloneDeep } from 'lodash'
 import { mockData } from '~/apis/mock-data'
 
 export const login = createAsyncThunk('auth/login', async (data, { dispatch }) => {
-  if (isAuth()) return 'You are already logged in'
   try {
     dispatch(setLoading(true))
     const response = await loginApi(data)
@@ -27,7 +26,6 @@ export const login = createAsyncThunk('auth/login', async (data, { dispatch }) =
 })
 
 export const register = createAsyncThunk('auth/register', async (data, { dispatch }) => {
-  if (isAuth()) return 'You are already logged in'
   try {
     dispatch(setLoading(true))
     const response = await registerApi(data)
