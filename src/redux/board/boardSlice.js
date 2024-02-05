@@ -15,7 +15,6 @@ const boardSlice = createSlice({
     setBoard: (state, action) => {
       state.loading = false
       Object.assign(state, action.payload)
-
     },
     setColumns: (state, action) => {
       Object.assign(state.columns, action.payload)
