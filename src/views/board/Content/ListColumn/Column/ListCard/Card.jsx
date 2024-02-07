@@ -2,15 +2,20 @@ import MuiCard from '@mui/material/Card'
 import { CardContent, CardMedia, Typography, CardActions, Accordion, AccordionSummary, AccordionDetails, Button } from '@mui/material'
 import {
   ThumbUp as ThumbUpIcon,
-  Comment as CommentIcon,
-  Share as ShareIcon,
+  Favorite as FavoriteIcon,
+  FileDownload as FileDownloadIcon,
   ExpandMore as ExpandMoreIcon
 } from '@mui/icons-material'
 import { CSS } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
-
+import { API_HOST } from '~/utils/constants'
+import { useDispatch } from 'react-redux'
+import { likeCard, favoriteCard, fileDownload } from '~/redux/board/boardSlice'
+import { useEffect } from 'react'
 
 const Card = ({ card, dragging }) => {
+  const dispatch = useDispatch()
+
   const {
     attributes,
     listeners,
@@ -31,7 +36,8 @@ const Card = ({ card, dragging }) => {
     border: isDragging ? '1px solid red' : 'none'
   }
 
-  const isShowActions = () => (!!card?.likes?.length || !!card?.comments?.length || !!card?.shares?.length) ? true : false
+  const isShowActions = card?.cover ? true : false
+  const { likes, favorites, downloads } = card
 
   return (
     <MuiCard
@@ -58,16 +64,15 @@ const Card = ({ card, dragging }) => {
             </Typography>
           </CardContent>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ bgcolor: (theme) => theme.palette.background.paper }}>
           {card?.cover && <CardMedia
             component="img"
-            image={`data:image/png;base64,${card.cover.toString('base64')}`}
+            image={API_HOST + card.cover}
             alt={card.title}
             sx={{
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
-              aspectRatio: '1 / 1'
+              objectFit: 'cover'
             }}
           />}
           {card?.description && <CardContent>
@@ -75,10 +80,17 @@ const Card = ({ card, dragging }) => {
               {card?.description}
             </Typography>
           </CardContent>}
-          {isShowActions() && <CardActions sx={{ gap:1, p:0 }}>
-            {!!card?.likes?.length && <Button startIcon={<ThumbUpIcon />} size="small">{card.likes.length}</Button>}
-            {!!card?.comments?.length && <Button startIcon={<CommentIcon />} size="small">{card.comments.length}</Button>}
-            {!!card?.shares?.length && <Button startIcon={<ShareIcon />} size="small">{card.shares.length}</Button>}
+          {isShowActions && <CardActions sx={{ gap:1, p:0 }}>
+            <Button
+              onClick={() => dispatch(likeCard(card))}
+              startIcon={<ThumbUpIcon />} size="small">{likes?.length || 0}</Button>
+            <Button
+              onClick={() => dispatch(favoriteCard(card))}
+              startIcon={<FavoriteIcon />} size="small">{favorites?.length || 0}</Button>
+            <Button
+              onClick={() => dispatch(fileDownload(card)) }
+              startIcon={<FileDownloadIcon />}
+              size="small">{downloads}</Button>
           </CardActions>}
         </AccordionDetails>
       </Accordion>

@@ -13,8 +13,8 @@ const ListColumn = ({ columns }) => {
         display: 'flex',
         width : '100%',
         height: '100%',
-        overflowX:'auto',
-        overflowY:'hidden',
+        overflow: 'auto',
+        gap: 2,
         bgcolor: 'inherit',
         '&::-webkit-scrollbar-track': {
           mx: 1,

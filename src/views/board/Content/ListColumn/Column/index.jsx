@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
 import HeaderColumn from './HeaderColumn'
 import FooterColumn from './FooterColumn'
+import { gridSpacing } from '~/utils/constants'
 
 
 const Column = ({ column }) => {
@@ -43,10 +44,11 @@ const Column = ({ column }) => {
           minWidth: (theme) => (theme.trello.columns.width),
           maxWidth: (theme) => (theme.trello.columns.width),
           maxHeight: (theme) => (theme.trello.columns.height),
-          margin:'8px 0px 0px 8px',
+          mt: 2,
           cursor: 'pointer',
           height: 'fit-content',
-          bgcolor: 'none'
+          bgcolor: (theme) => theme.palette.secondary.main,
+          borderRadius: (theme) => (theme?.customization?.borderRadius)
         }}>
         {/* header column */}
         <HeaderColumn column={column} />

@@ -31,6 +31,7 @@ import NotificationList from './NotificationList'
 
 // assets
 import { IconBell } from '@tabler/icons-react'
+import { gridSpacing } from '~/utils/constants'
 
 // notification status options
 const status = [
@@ -170,8 +171,8 @@ const NotificationSection = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflowX: 'hidden' }}>
-                        <Grid container direction="column" spacing={2}>
+                      <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflow: 'hidden' }}>
+                        <Grid container direction="column" spacing={gridSpacing}>
                           <Grid item xs={12}>
                             <Box sx={{ px: 2, pt: 0.25 }}>
                               <TextField

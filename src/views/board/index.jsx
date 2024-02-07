@@ -18,7 +18,7 @@ import { jwtDecode } from 'jwt-decode'
 
 const Board = () => {
   return (
-    <Container disableGutters maxWidth='false' sx={{ height: '100vh', '@media (min-width: 600px)': { paddingLeft: '0', paddingRight: '0' } }}>
+    <Container disableGutters maxWidth='false'>
       <BoardBar />
       <BoardContent />
     </Container>

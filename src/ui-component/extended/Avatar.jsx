@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 // material-ui
 import { useTheme } from '@mui/material/styles'
 import MuiAvatar from '@mui/material/Avatar'
+import Tooltip from '@mui/material/Tooltip'
 
 // ==============================|| AVATAR ||============================== //
 
-const Avatar = ({ color, outline, size, sx, ...others }) => {
+const Avatar = ({ color, outline, size, sx, tooltip, hover, ...others }) => {
   const theme = useTheme()
 
   const colorSX = color && !outline && { color: theme.palette.background.paper, bgcolor: `${color}.main` }
@@ -58,7 +59,19 @@ const Avatar = ({ color, outline, size, sx, ...others }) => {
     sizeSX = {}
   }
 
-  return <MuiAvatar sx={{ ...colorSX, ...outlineSX, ...sizeSX, ...sx }} {...others} />
+  hover = hover && {
+    transition: '0.2s',
+    '&:hover': {
+      opacity: 0.8,
+      transform: 'scale(1.5)',
+      border: '2px solid',
+      zIndex: 1
+    }
+  }
+
+  return <Tooltip title={tooltip} placement="bottom">
+    <MuiAvatar sx={{ ...colorSX, ...outlineSX, ...sizeSX, '&:hover': hover, ...sx }} {...others} />
+  </Tooltip>
 }
 
 Avatar.propTypes = {

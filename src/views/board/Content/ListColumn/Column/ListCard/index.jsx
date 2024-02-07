@@ -13,8 +13,7 @@ const ListCard = ({ cards }) => {
         height: 'fit-content',
         gap: 1,
         padding:'3px 5px',
-        overflowX: 'hidden',
-        overflowY: 'auto',
+        overflow: 'auto',
         '& .MuiCardActions-root': {
           justifyContent: 'flex-end'
         },

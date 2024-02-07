@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -22,7 +21,6 @@ import { useConfirm } from 'material-ui-confirm'
 // project imports
 import MainChip from '~/ui-component/chips/MainChip'
 import SkeletonChip from '~/ui-component/chips/Skeleton/TabChip'
-import { gridSpacing } from '~/utils/constants'
 import { fetchListBoard, addBoard, destroyBoard } from '~/redux/Auth/thunk'
 
 // assets
@@ -80,8 +78,6 @@ const TabsChip = () => {
 
   const handleDelete = async ({ id, title }) => {
     try {
-
-
       await confirm({
         title: 'Are you sure to delete ' + title + '?',
         description: 'This will delete all cards in ' + title,
@@ -159,13 +155,13 @@ const TabsChip = () => {
 
   return (
     <>
-      <Stack direction="row" spacing={gridSpacing}>
+      <Stack direction="row">
         {loading ? (<SkeletonChip />) : (
-          list.length > 0 && list.map((board, index) => {
+          list.length > 0 && list.map((board) => {
             const isSelect = selected === board._id
             return (
               <ChipWrapper
-                key={index}
+                key={board._id}
                 title={board.title}
                 tooltip={board.description}
                 handleDelete={() => handleDelete({ id :board._id, title : board.title })}
@@ -236,10 +232,6 @@ const TabsChip = () => {
       </Stack>
     </>
   )
-}
-
-TabsChip.propTypes = {
-  loading: PropTypes.bool
 }
 
 export default TabsChip

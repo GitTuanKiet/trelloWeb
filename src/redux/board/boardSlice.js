@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { updateBoardApi, setMoveCardWithoutColumnApi, updateColumnApi } from '~/apis'
+import { updateBoardApi, setMoveCardWithoutColumnApi, updateColumnApi, actionCardApi, fileDownloadApi } from '~/apis'
 import { mockData } from '~/apis/mock-data'
+import { getUserId } from '~/utils/auth'
 
 export const initialState = {
   loading: false,
@@ -56,6 +57,48 @@ const boardSlice = createSlice({
         nextColumnId,
         nextCardOrderIds
       })
+    },
+    likeCard: (state, action) => {
+      const { _id, columnId, likes } = action.payload
+      const column = state.columns.find((column) => column._id === columnId)
+      const card = column.cards.find((card) => card._id === _id)
+
+      const userId = getUserId()
+
+      if (card.likes.includes(userId)) {
+        card.likes = card.likes.filter((like) => like !== userId)
+      } else {
+        card.likes = [...likes, userId]
+      }
+
+      if (userId !== 'guest') actionCardApi(_id, { likes: card.likes })
+    },
+    favoriteCard: (state, action) => {
+      const { _id, columnId, favorites } = action.payload
+      const column = state.columns.find((column) => column._id === columnId)
+      const card = column.cards.find((card) => card._id === _id)
+
+      const userId = getUserId()
+
+      if (favorites.includes(userId)) {
+        card.favorites = favorites.filter((favorite) => favorite !== userId)
+      } else {
+        card.favorites = [...favorites, userId]
+      }
+
+      if (userId !== 'guest') actionCardApi(_id, { favorites: card.favorites })
+    },
+    fileDownload: (state, action) => {
+      const { _id, columnId, downloads, cover } = action.payload
+      const column = state.columns.find((column) => column._id === columnId)
+      const card = column.cards.find((card) => card._id === _id)
+      card.downloads = downloads + 1
+
+      let fileName = null
+      if (cover.includes('/')) fileName = cover.split('/')[2]
+      else fileName = cover.split('\\')[2]
+
+      if (fileName) fileDownloadApi( _id, fileName )
     }
   }
 })
@@ -68,5 +111,8 @@ export const {
   setError,
   setMoveColumn,
   setMoveCardWithinColumn,
-  setMoveCardWithoutColumn
+  setMoveCardWithoutColumn,
+  likeCard,
+  favoriteCard,
+  fileDownload
 } = boardSlice.actions

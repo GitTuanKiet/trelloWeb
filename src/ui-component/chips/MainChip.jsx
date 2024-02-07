@@ -36,36 +36,37 @@ const MainChip = forwardRef(
     const theme = useTheme()
 
     return (
-      <div>
-        <Tooltip title={<Typography variant="h3">{capitalizeFirstLetter(tooltip) || capitalizeFirstLetter(title)}</Typography>} placement="bottom-start">
-          <Chip
-            ref={ref}
-            {...others}
+      <>
+        <>
+          <Tooltip title={<Typography variant="h3">{capitalizeFirstLetter(tooltip) || capitalizeFirstLetter(title)}</Typography>} placement="bottom-start">
+            <Chip
+              ref={ref}
+              {...others}
+              sx={{
+                border: border ? '1px solid' : 'none',
+                borderColor: theme.palette.primary[200] + 25,
+                ':hover': {
+                  boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
+                },
+                ...sx
+              }}
+              label={<Typography variant="h3">{capitalizeFirstLetter(title)}</Typography>}
+              variant="outlined"
+              onClick={handleClick}
+              clickable
+            />
+          </Tooltip>
+          <IconButton
+            size="small"
             sx={{
-              border: border ? '1px solid' : 'none',
-              borderColor: theme.palette.primary[200] + 25,
-              ':hover': {
-                boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
-              },
-              ...sx
+              color: theme.palette.error.main
             }}
-            label={<Typography variant="h3">{capitalizeFirstLetter(title)}</Typography>}
-            variant="outlined"
-            onClick={handleClick}
-            clickable
-          />
-        </Tooltip>
-        <IconButton
-          size="small"
-          sx={{
-            color: theme.palette.error.main,
-            position: 'relative'
-          }}
-          onClick={handleDelete}
-        >
-          <DeleteIcon fontSize="small" />
-        </IconButton>
-      </div>
+            onClick={handleDelete}
+          >
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </>
+      </>
     )
   }
 )

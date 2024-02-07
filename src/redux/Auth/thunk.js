@@ -143,8 +143,8 @@ export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boa
     dispatch(setLoading(true))
     const result = await destroyBoardApi(boardId)
 
-    if (result.payload) {
-      return result.payload
+    if (result.error) {
+      return result.error
     }
 
     const clone = cloneDeep(getState().auth.listBoard)

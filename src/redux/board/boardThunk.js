@@ -105,8 +105,8 @@ export const destroyColumn = createAsyncThunk('board/destroyColumn', async (colu
     dispatch(setBoard(cloneBoard))
     const result = await destroyColumnApi(getState().board._id, columnId)
 
-    if (result.payload) {
-      return result.payload
+    if (result.error) {
+      return result.error
     }
 
   } catch (error) {

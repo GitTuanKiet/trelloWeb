@@ -1,5 +1,6 @@
 import * as jose from 'jose'
 const { JWT } = jose
+import { jwtDecode } from 'jwt-decode'
 
 export const generateToken = (user) => {
   return JWT.sign(user, import.meta.env.SECRET_KEY, {
@@ -27,4 +28,11 @@ export const removeTokenJWT = () => {
 
 export const isAuth = () => {
   return getTokenJWT() !== null
+}
+
+export const getUserId = () => {
+  if (!isAuth()) return 'guest'
+  const token = getTokenJWT()
+  const { _id } = jwtDecode(token)
+  return _id
 }

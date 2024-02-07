@@ -1,5 +1,5 @@
 import {
-  Box, Divider, ListItemIcon, Typography, Menu, MenuItem, MenuList
+  Box, Divider, ListItemIcon, Typography, Menu, MenuItem, MenuList, useTheme
 } from '@mui/material'
 import {
   Delete as DeleteIcon,
@@ -8,12 +8,14 @@ import {
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { destroyColumn } from '~/redux/board/boardThunk'
 
 const HeaderColumn = ({ column }) => {
 
   const dispatch = useDispatch()
+  const theme = useTheme()
+  const isRadius = theme?.customization?.borderRadius > 16
 
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -64,11 +66,9 @@ const HeaderColumn = ({ column }) => {
   return (
     <Box sx={{
       display: 'flex',
-      bgcolor: (theme) => theme.palette.primary.main,
-      justifyContent: 'space-between',
+      justifyContent: (!isRadius) ? 'space-between' : 'center',
       borderBottom: '1px solid rgba(0,0,0,0.12)',
-      padding: 1,
-      borderRadius: (theme) => (theme?.customization?.borderRadius),
+      px: 2,
       alignItems: 'center',
       maxHeight:(theme) => theme.trello.columns.heightheader,
       minHeight:(theme) => theme.trello.columns.heightheader

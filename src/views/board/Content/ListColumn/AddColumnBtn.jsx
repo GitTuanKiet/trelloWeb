@@ -50,7 +50,7 @@ const AddColumnBtn = () => {
             display:'flex',
             alignItems:'center',
             justifyContent:'center',
-            margin:'8px 0px 0px 16px',
+            mt: 2,
             color:'text.primary',
             fontWeight:'bold',
             fontSize:'1.2rem'

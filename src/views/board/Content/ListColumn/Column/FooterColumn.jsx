@@ -1,6 +1,7 @@
 import {
   Box, Button, Typography,
-  Dialog, DialogActions, DialogContent, DialogTitle, TextField
+  Dialog, DialogActions, DialogContent, DialogTitle, TextField,
+  useTheme
 } from '@mui/material'
 import {
   AddBox as AddBoxIcon,
@@ -15,6 +16,8 @@ import { newCard } from '~/redux/board/boardThunk'
 
 const FooterColumn = ({ column }) => {
   const dispatch = useDispatch()
+  const theme = useTheme()
+  const isRadius = theme?.customization?.borderRadius > 16
 
   const [images, setImages] = useState([])
   const [openDialog, setOpenDialog] = useState(false)
@@ -33,7 +36,6 @@ const FooterColumn = ({ column }) => {
     if (data.title === '') return toast.error('Please enter card title')
 
     try {
-
 
       dispatch(newCard({ columnId: column?._id, ...data })).then((result) => {
         if (result.payload) {
@@ -55,14 +57,12 @@ const FooterColumn = ({ column }) => {
     <Box
       sx={{
         display: 'flex',
-        bgcolor: (theme) => theme.palette.secondary.main,
-        justifyContent: 'space-between',
+        width: 'inherit',
+        px: 2,
+        justifyContent: (!isRadius) ? 'space-between' : 'center',
         borderTop: '1px solid rgba(0,0,0,0.12)',
-        borderRadius: (theme) => (theme?.customization?.borderRadius),
-        padding: 1,
         alignItems: 'center',
-        maxHeight:(theme) => theme.trello.columns.heightfooter,
-        minHeight:(theme) => theme.trello.columns.heightfooter
+        height:(theme) => theme.trello.columns.heightfooter
       }}
     >
       <Button

@@ -30,7 +30,7 @@ export const addNewCardApi = async (boardId, data) => {
   formData.append('columnId', data.columnId)
   formData.append('title', data.title)
   if (data.description) formData.append('description', data.description)
-  if (data.cover) formData.append('cover', data.cover)
+  if (data.cover) formData.append('cover', data.cover[0])
 
   const response = await axios.post(`${API_HOST}/cards/create/${boardId}`, formData, {
     headers: {
@@ -65,6 +65,29 @@ export const destroyColumnApi = async (boardId, columnId) => {
 
 export const destroyBoardApi = async (boardId) => {
   const response = await axios.delete(`${API_HOST}/boards/delete/${boardId}`, Authorization())
+  return response.data
+}
+
+//card
+export const actionCardApi = async (cardId, data) => {
+  const response = await axios.put(`${API_HOST}/cards/action/${cardId}`, data, Authorization())
+  return response.data
+}
+
+export const fileDownloadApi = async (cardId, fileName) => {
+  const response = await axios.get(`${API_HOST}/download/${fileName}&&${cardId}`, {
+    responseType: 'blob'
+  })
+
+  const blog = new Blob([response.data], { type: response.data.type })
+  const url = window.URL.createObjectURL(blog)
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', fileName)
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+
   return response.data
 }
 
