@@ -22,7 +22,7 @@ export const mockData = {
             columnId: 'column-id-01',
             title: 'Title of card 01',
             description: 'Description of card 01',
-            cover: '\\uploads\\cover_1707245296295_trello-ar21.svg',
+            cover: '\\uploads\\cover_1707278742004_trello-ar21.svg',
             likes: ['test-user-id-01'],
             favorites: ['test comment 01', 'test comment 02'],
             downloads: 3
