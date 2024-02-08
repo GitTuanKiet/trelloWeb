@@ -44,7 +44,7 @@ import { jwtDecode } from 'jwt-decode'
 const FirebaseLogin = ({ ...others }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { token, user } = useSelector((state) => state.auth)
+  const { token, user, error } = useSelector((state) => state.auth)
   const theme = useTheme()
   const scriptedRef = useScriptRef()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
@@ -65,12 +65,9 @@ const FirebaseLogin = ({ ...others }) => {
   }
 
   useEffect(() => {
-    if (token && user) {
-      toast.success('Login success ! Hello ' + user.firstName + ' ' + user.lastName)
-      const decoded = jwtDecode(token)
-      navigate(`/board/${decoded.id}`)
-    }
-  }, [token, user, navigate])
+    if (error) {
+      toast.error(error)
+    }}, [error])
 
   return (
     <>
@@ -152,6 +149,13 @@ const FirebaseLogin = ({ ...others }) => {
                 setStatus({ success: false })
                 setErrors({ submit: response.payload })
                 setSubmitting(false)
+                let userLocal = JSON.parse(localStorage.getItem('user'))
+                if (user) userLocal = user
+                toast.success('Login success ! Welcome ' + userLocal?.firstName + ' ' + userLocal?.lastName)
+                let tokenLocal = localStorage.getItem('token')
+                if (token) tokenLocal = token
+                const decoded = jwtDecode(tokenLocal)
+                navigate(`/board/${decoded.id}`)
               })
             }
           } catch (err) {
@@ -166,7 +170,7 @@ const FirebaseLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"

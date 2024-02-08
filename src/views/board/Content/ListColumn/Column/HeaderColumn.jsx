@@ -1,9 +1,10 @@
 import {
-  Box, Divider, ListItemIcon, Typography, Menu, MenuItem, MenuList, useTheme
+  Box, ListItemIcon, Typography, Menu, MenuItem, MenuList, useTheme
 } from '@mui/material'
 import {
   Delete as DeleteIcon,
-  ArrowDropDown, Cloud, ContentCopy, ContentCut, ContentPaste
+  Edit as EditIcon,
+  ArrowDropDown
 } from '@mui/icons-material'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -102,34 +103,15 @@ const HeaderColumn = ({ column }) => {
         <MenuList>
           <MenuItem>
             <ListItemIcon>
-              <ContentCut fontSize="small" />
+              <EditIcon fontSize="small" />
             </ListItemIcon>
-            <Typography>Cut</Typography>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <ContentCopy fontSize="small" />
-            </ListItemIcon>
-            <Typography>Copy</Typography>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <ContentPaste fontSize="small" />
-            </ListItemIcon>
-            <Typography>Paste</Typography>
+            <Typography>Edit</Typography>
           </MenuItem>
           <MenuItem onClick ={handleDeleteColumn}>
             <ListItemIcon>
               <DeleteIcon fontSize="small" />
             </ListItemIcon>
             <Typography>Delete</Typography>
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <Cloud fontSize="small" />
-            </ListItemIcon>
-            <Typography>Web Clipboard</Typography>
           </MenuItem>
         </MenuList>
       </Menu>

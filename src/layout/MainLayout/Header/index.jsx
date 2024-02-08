@@ -78,7 +78,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
               Sign In
             </Typography>
           </ButtonBase>
-          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', p: 2 }} onClick={() => window.location.href = '/pages/register/register3'}>
+          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', py: 2 }} onClick={() => window.location.href = '/pages/register/register3'}>
             <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
               Sign Up
             </Typography>

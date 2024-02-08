@@ -30,17 +30,15 @@ const FirebaseForgotPassword = ({ ...others }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { token, user } = useSelector((state) => state.auth)
+  const { error } = useSelector((state) => state.auth)
 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
   const customization = useSelector((state) => state.customization)
 
   useEffect(() => {
-    if (token && user) {
-      toast.success('Password reset email has been sent! New password: ' + user.password)
-      navigate('/pages/login/login3')
-    }
-  }, [token, user, navigate])
+    if (error) {
+      toast.error(error)
+    }}, [error])
 
   return (
     <Grid container direction="column" justifyContent="center" spacing={gridSpacing}>
@@ -91,6 +89,8 @@ const FirebaseForgotPassword = ({ ...others }) => {
                 setStatus({ success: false })
                 setErrors({ submit: response.payload })
                 setSubmitting(false)
+                toast.success('Password reset email has been sent! New password: 123456')
+                navigate('/pages/login/login3')
               })
             } catch (err) {
               setStatus({ success: false })

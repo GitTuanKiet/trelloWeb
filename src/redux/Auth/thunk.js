@@ -139,7 +139,7 @@ export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dis
 
 export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (board, { dispatch, getState }) => {
   if (!isAuth()) return 'You must be logged in to perform this action'
-  if (board.userId !== getUserId()) return 'You are not the owner of this board'
+  if (getState().board.userId !== getUserId()) return 'You are not the owner of this board'
   if (board._id === mockData.board._id) return 'You cannot delete this board'
   try {
     dispatch(setLoading(true))
@@ -150,10 +150,9 @@ export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boa
     }
 
     const clone = cloneDeep(getState().auth.listBoard)
-    const index = clone.findIndex((board) => board._id === board._id)
-    clone.splice(index, 1)
-    if (clone.length === 0) clone.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
-    dispatch(setList(clone))
+    const newList = clone.filter((item) => item._id !== board._id)
+    if (newList.length === 0) newList.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
+    dispatch(setList(newList))
 
   } catch (error) {
     dispatch(setError(error.message))

@@ -48,7 +48,7 @@ const FirebaseRegister = ({ ...others }) => {
   const scriptedRef = useScriptRef()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
   const customization = useSelector((state) => state.customization)
-  const { token, user } = useSelector((state) => state.auth)
+  const { token, user, error } = useSelector((state) => state.auth)
   const [showPassword, setShowPassword] = useState(false)
   const [checked, setChecked] = useState(true)
 
@@ -83,7 +83,13 @@ const FirebaseRegister = ({ ...others }) => {
           }
           setStatus({ success: true })
           setSubmitting(false)
-          navigate('/pages/login/login3')
+          let userLocal = JSON.parse(localStorage.getItem('user'))
+          if (user) userLocal = user
+          toast.success('Register Successfully ! Your name is ' + userLocal.firstName + ' ' + userLocal.lastName)
+          let tokenLocal = localStorage.getItem('token')
+          if (token) tokenLocal = token
+          const decoded = jwtDecode(tokenLocal)
+          navigate(`/board/${decoded.id}`)
         })
       }
     } catch (err) {
@@ -100,12 +106,9 @@ const FirebaseRegister = ({ ...others }) => {
   }, [])
 
   useEffect(() => {
-    if (token && user) {
-      toast.success('Register Successfully ! Your name is ' + user.firstName + ' ' + user.lastName)
-      const decoded = jwtDecode(token)
-      navigate(`/board/${decoded.id}`)
-    }
-  }, [token, user, navigate])
+    if (error) {
+      toast.error(error)
+    }}, [error])
 
   return (
     <>

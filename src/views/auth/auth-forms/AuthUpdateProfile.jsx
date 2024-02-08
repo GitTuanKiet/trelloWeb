@@ -35,17 +35,16 @@ const UpdateProfile = ({ ...others }) => {
   const theme = useTheme()
   const scriptedRef = useScriptRef()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
-  const { user } = useSelector((state) => state.auth)
-  const userLocal = JSON.parse(localStorage.getItem('user'))
+  const { user, error } = useSelector((state) => state.auth)
+  let userLocal = JSON.parse(localStorage.getItem('user'))
   const avatar = userLocal.avatar ? API_HOST + userLocal.avatar : User1
   const [images, setImages] = useState([avatar])
 
   useEffect(() => {
-    if (user) {
-      toast.success('Update Successfully ! You are ' + user.firstName + ' ' + user.lastName)
-      navigate('/board')
+    if (error) {
+      toast.error(error)
     }
-  }, [user, navigate])
+  }, [error])
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     if (values.firstName === userLocal.firstName &&
@@ -69,6 +68,9 @@ const UpdateProfile = ({ ...others }) => {
           }
           setStatus({ success: true })
           setSubmitting(false)
+          if (user) userLocal = user
+          toast.success('Update Successfully ! You are ' + userLocal.firstName + ' ' + userLocal.lastName)
+          navigate('/board')
         })
       }
     } catch (err) {

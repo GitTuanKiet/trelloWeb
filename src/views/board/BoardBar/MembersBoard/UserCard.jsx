@@ -38,10 +38,6 @@ const UserCard = ({ user, type }) => {
   const { loading } = useSelector((state) => state.user)
 
   const handleInviteMember = (user) => {
-    if (!isOwner(board, getUserId())) {
-      toast.error('You are not the owner of this board')
-      return
-    }
     dispatch(inviteMember({ board, user })).then((result) => {
       if (result.payload) {
         toast.error(result.payload)
