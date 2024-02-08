@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
-import { Avatar, Box, ButtonBase } from '@mui/material'
+import { Avatar, Box, ButtonBase, Typography } from '@mui/material'
 
 // project imports
 import LogoSection from '../LogoSection'
@@ -67,10 +67,22 @@ const Header = ({ handleLeftDrawerToggle }) => {
       {/* notification & profile */}
       <Mode />
 
-      {user &&
+      {user ?
         <>
           <NotificationSection />
           <ProfileSection user={user} />
+        </>
+        : <>
+          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', p: 2 }} onClick={() => window.location.href = '/pages/login/login3'}>
+            <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
+              Sign In
+            </Typography>
+          </ButtonBase>
+          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', p: 2 }} onClick={() => window.location.href = '/pages/register/register3'}>
+            <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
+              Sign Up
+            </Typography>
+          </ButtonBase>
         </>
       }
     </>

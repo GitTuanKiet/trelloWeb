@@ -7,6 +7,13 @@ const FileUploader = (props) => {
   const maxImagesUpload = 1
   const inputId = Math.random().toString(32).substring(2)
 
+  let avatarSx = {}
+  avatarSx = props.type === 'avatar' && {
+    width: '100px',
+    height: '100px',
+    borderRadius: '50%'
+  }
+
   const handleOnAddImage = async (e) => {
     if (!e.target.files) return
     const files = []
@@ -27,13 +34,10 @@ const FileUploader = (props) => {
 
   return (
     <>
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
+      <Grid container justifyContent="center" alignItems="center">
         {props.images.map((image, i) => (
           <Grid
             item
-            xs={4}
-            sm={4}
-            md={4}
             key={i}
             sx={{
               display: 'flex',
@@ -46,8 +50,8 @@ const FileUploader = (props) => {
               aria-label='delete image'
               style={{
                 position: 'absolute',
-                top: 10,
-                right: 0,
+                top: 0,
+                right:0,
                 color: '#aaa'
               }}
               onClick={() => handleOnRemoveImage(i)}
@@ -55,24 +59,33 @@ const FileUploader = (props) => {
               <CancelIcon />
             </IconButton>
             <img
-              src={URL.createObjectURL(image)}
+              src={image !== props.src ? URL.createObjectURL(image) : props.src ? props.src : ''}
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
-                aspectRatio: '1 / 1'
+                objectFit: 'cover',
+                ...avatarSx
               }}
               alt=''
             />
           </Grid>
         ))}
       </Grid>
-      <label htmlFor={inputId}>
-        <Button variant='contained' disabled={props.images.length >= maxImagesUpload} component='span' sx={{ mt: 4 }}>
+      <label htmlFor={inputId} style={{ display:'flex', width:'100%', justifyContent:'center' }}>
+        <Button
+          variant='contained'
+          disabled={props.images.length >= maxImagesUpload}
+          component='span'
+          sx={{
+            mt: 4,
+            display: props.images.length >= maxImagesUpload ? 'none' : ''
+          }}
+        >
           Upload Image
         </Button>
         <input
           id={inputId}
+          name={props.name}
           type='file'
           multiple
           accept='image/*,.png,.jpg,.jpeg,.gif'

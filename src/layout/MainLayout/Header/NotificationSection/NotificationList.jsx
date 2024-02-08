@@ -21,6 +21,9 @@ import {
 import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons-react'
 import User1 from '~/assets/images/users/user-round.svg'
 
+// project imports
+import { API_HOST } from '~/utils/constants'
+
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
   cursor: 'pointer',
@@ -39,6 +42,7 @@ const NotificationList = () => {
   const theme = useTheme()
 
   const user = JSON.parse(localStorage.getItem('user'))
+  const userAvatar = user.avatar ? API_HOST+user.avatar : User1
 
   const chipSX = {
     height: 24,
@@ -88,7 +92,7 @@ const NotificationList = () => {
       <ListItemWrapper>
         <ListItem alignItems="center">
           <ListItemAvatar>
-            <Avatar alt={user.firstName + ' ' + user.lastName} src={User1} />
+            <Avatar alt={user.firstName + ' ' + user.lastName} src={userAvatar} />
           </ListItemAvatar>
           <ListItemText primary={user.firstName + ' ' + user.lastName} />
           <ListItemSecondaryAction>
@@ -201,7 +205,7 @@ const NotificationList = () => {
       <ListItemWrapper>
         <ListItem alignItems="center">
           <ListItemAvatar>
-            <Avatar alt={user.firstName + ' ' + user.lastName} src={User1} />
+            <Avatar alt={user.firstName + ' ' + user.lastName} src={userAvatar} />
           </ListItemAvatar>
           <ListItemText primary={<Typography variant="body2">{user.firstName + ' ' + user.lastName}</Typography>} />
           <ListItemSecondaryAction>
@@ -251,7 +255,7 @@ const NotificationList = () => {
       <ListItemWrapper>
         <ListItem alignItems="center">
           <ListItemAvatar>
-            <Avatar alt={user.firstName + ' ' + user.lastName} src={User1} />
+            <Avatar alt={user.firstName + ' ' + user.lastName} src={userAvatar} />
           </ListItemAvatar>
           <ListItemText primary={<Typography variant="body2">{user.firstName + ' ' + user.lastName}</Typography>} />
           <ListItemSecondaryAction>

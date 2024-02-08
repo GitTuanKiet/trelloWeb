@@ -4,8 +4,16 @@ export const mockData = {
     title: 'TuanKiet TrelloWeb-Project',
     slug: 'tuankiet-trello-web-project',
     description: 'Pro MERN stack Course',
-    userId: 'tuankiet',
-    likes: [],
+    userId: '65be12eaad430f89c2a0ed90',
+    members: [
+      {
+        _id: '65be12eaad430f89c2a0ed90',
+        firstName: 'Tuan',
+        lastName: 'Kiet',
+        email: 'test@gmail.com',
+        avatar: '\\uploads\\avatar_1707320229886_t.jpg'
+      }
+    ],
     columnOrderIds: ['column-id-01', 'column-id-02', 'column-id-03'],
     columns: [
       {

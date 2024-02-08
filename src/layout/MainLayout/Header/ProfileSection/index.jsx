@@ -36,6 +36,7 @@ import Transitions from '~/ui-component/extended/Transitions'
 import UpgradePlanCard from './UpgradePlanCard'
 import User1 from '~/assets/images/users/user-round.svg'
 import { logout } from '~/redux/Auth/slice'
+import { API_HOST } from '~/utils/constants'
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons-react'
@@ -91,6 +92,8 @@ const ProfileSection = forwardRef(( { user }, ref) => {
     prevOpen.current = open
   }, [open])
 
+  const userAvatar = JSON.parse(localStorage.getItem('user')).avatar
+  const avatar = userAvatar ? API_HOST+userAvatar : User1
   return (
     <div ref={ref}>
       <Chip
@@ -115,7 +118,7 @@ const ProfileSection = forwardRef(( { user }, ref) => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={avatar}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
@@ -252,38 +255,24 @@ const ProfileSection = forwardRef(( { user }, ref) => {
                         <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 0}
-                          onClick={(event) => handleListItemClick(event, 0, '#')}
+                          onClick={(event) => handleListItemClick(event, 0, '/pages/update-password/update-password3')}
                         >
                           <ListItemIcon>
                             <IconSettings stroke={1.5} size="1.3rem" />
                           </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
+                          <ListItemText primary={<Typography variant="body2">Update Password</Typography>} />
                         </ListItemButton>
                         <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 1}
-                          onClick={(event) => handleListItemClick(event, 1, '#')}
+                          onClick={(event) => handleListItemClick(event, 1, '/pages/update-profile/update-profile3')}
                         >
                           <ListItemIcon>
                             <IconUser stroke={1.5} size="1.3rem" />
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Grid container spacing={1} justifyContent="space-between">
-                                <Grid item>
-                                  <Typography variant="body2">Social Profile</Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Chip
-                                    label="02"
-                                    size="small"
-                                    sx={{
-                                      bgcolor: theme.palette.warning.dark,
-                                      color: theme.palette.background.default
-                                    }}
-                                  />
-                                </Grid>
-                              </Grid>
+                              <Typography variant="body2">Update Profile</Typography>
                             }
                           />
                         </ListItemButton>

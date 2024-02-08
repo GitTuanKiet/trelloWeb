@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { loginApi, registerApi, forgotPasswordApi, updateProfileApi, updatePasswordApi, fetchListBoardApi } from '~/apis/authApi'
 import { setLoading, setError, setToken, setUser, setList } from './slice'
 import { addBoardApi, destroyBoardApi } from '~/apis'
-import { isAuth } from '~/utils/auth'
+import { isAuth, getUserId } from '~/utils/auth'
 import { cloneDeep } from 'lodash'
 import { mockData } from '~/apis/mock-data'
 
@@ -137,18 +137,20 @@ export const addBoard = createAsyncThunk('boardBar/addBoard', async (data, { dis
   }
 })
 
-export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (boardId, { dispatch, getState }) => {
+export const destroyBoard = createAsyncThunk('boardBar/destroyBoard', async (board, { dispatch, getState }) => {
+  if (!isAuth()) return 'You must be logged in to perform this action'
+  if (board.userId !== getUserId()) return 'You are not the owner of this board'
+  if (board._id === mockData.board._id) return 'You cannot delete this board'
   try {
-    if (!isAuth()) return 'You must be logged in to perform this action'
     dispatch(setLoading(true))
-    const result = await destroyBoardApi(boardId)
+    const result = await destroyBoardApi(board._id)
 
     if (result.error) {
       return result.error
     }
 
     const clone = cloneDeep(getState().auth.listBoard)
-    const index = clone.findIndex((board) => board._id === boardId)
+    const index = clone.findIndex((board) => board._id === board._id)
     clone.splice(index, 1)
     if (clone.length === 0) clone.push({ _id: mockData.board._id, title: mockData.board.title, description: mockData.board.description })
     dispatch(setList(clone))

@@ -30,7 +30,12 @@ export const logoutApi = async () => {
 }
 
 export const updateProfileApi = async (data) => {
-  const response = await axios.post(`${API_HOST}/auth/update-profile`, data, Authorization())
+  const response = await axios.post(`${API_HOST}/auth/update-profile`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
   return response.data
 }
 

@@ -76,7 +76,7 @@ const TabsChip = () => {
 
   const [list, setList] = useState(listBoard)
 
-  const handleDelete = async ({ id, title }) => {
+  const handleDelete = async ({ board, title }) => {
     try {
       await confirm({
         title: 'Are you sure to delete ' + title + '?',
@@ -87,7 +87,7 @@ const TabsChip = () => {
         confirmationButtonProps: { variant: 'contained', color: 'error' },
         cancellationButtonProps: { variant: 'outlined' }
       }).then(() => {
-        dispatch(destroyBoard(id)).then((result) => {
+        dispatch(destroyBoard(board)).then((result) => {
           if (result.payload) {
             toast.error(result.payload)
             return
@@ -164,7 +164,7 @@ const TabsChip = () => {
                 key={board._id}
                 title={board.title}
                 tooltip={board.description}
-                handleDelete={() => handleDelete({ id :board._id, title : board.title })}
+                handleDelete={() => handleDelete({ board, title : board.title })}
                 handleClick={() => handleChange({ id : board._id, title : board.title })}
                 sx={{
                   backgroundColor: theme.palette.primary.dark,

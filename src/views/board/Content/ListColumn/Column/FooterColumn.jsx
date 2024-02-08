@@ -68,11 +68,11 @@ const FooterColumn = ({ column }) => {
       <Button
         variant="contained"
         onClick={showDialog}
-        startIcon={ <AddBoxIcon sx={{ cursor:'pointer', color:'text.primary' }}
+        startIcon={ <AddBoxIcon sx={{ cursor:'pointer' }}
         /> } >
-        <Typography sx={{ color:'text.primary' }}>Add New Card</Typography>
+        <Typography>Add New Card</Typography>
       </Button>
-      <Button variant="contained" endIcon={<DragHandleIcon sx={{ cursor:'pointer', color:'text.primary' }} />} ></Button>
+      <Button variant="contained" endIcon={<DragHandleIcon sx={{ cursor:'pointer' }} />} ></Button>
       <Dialog
         data-no-dnd
         open={openDialog}
