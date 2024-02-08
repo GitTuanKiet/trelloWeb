@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchDetailsBoardsApi, addNewCardApi, addNewColumnApi, destroyColumnApi } from '~/apis'
+import { fetchDetailsBoardsApi, addNewCardApi, addNewColumnApi, destroyColumnApi, updateColumnApi } from '~/apis'
 import { cloneDeep, isEmpty } from 'lodash'
 import { sortArray } from '~/utils/sorts'
 import { generatePlaceholder } from '~/utils/formatters'
@@ -109,6 +109,35 @@ export const destroyColumn = createAsyncThunk('board/destroyColumn', async (colu
       return result.error
     }
 
+  } catch (error) {
+    dispatch(setError(error.message))
+  } finally {
+    dispatch(setLoading(false))
+  }
+})
+
+export const updateColumn = createAsyncThunk('board/updateColumn', async (column, { dispatch, getState }) => {
+  try {
+    if (!isAuth()) return 'You must be logged in to perform this action'
+    dispatch(setLoading(true))
+
+    const cloneColumns = cloneDeep(getState().board.columns)
+    const cloneColumn = cloneColumns.find((item) => item._id === column._id)
+
+    if (cloneColumn.title === column.title && cloneColumn.description === column.description) {
+      return 'No changes'
+    }
+
+    const result = await updateColumnApi(getState().board._id, { _id: column._id, title: column.title, description: column.description })
+
+    if (result.error) {
+      return result.error
+    }
+
+
+    cloneColumn.title = column.title
+    cloneColumn.description = column.description
+    dispatch(setColumns(cloneColumns))
   } catch (error) {
     dispatch(setError(error.message))
   } finally {

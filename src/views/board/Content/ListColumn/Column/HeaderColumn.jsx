@@ -1,5 +1,6 @@
 import {
-  Box, ListItemIcon, Typography, Menu, MenuItem, MenuList, useTheme
+  Box, ListItemIcon, Typography, Menu, MenuItem, MenuList, useTheme, Tooltip,
+  Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button
 } from '@mui/material'
 import {
   Delete as DeleteIcon,
@@ -10,7 +11,7 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
 import { useDispatch } from 'react-redux'
-import { destroyColumn } from '~/redux/board/boardThunk'
+import { destroyColumn, updateColumn } from '~/redux/board/boardThunk'
 
 const HeaderColumn = ({ column }) => {
 
@@ -18,12 +19,24 @@ const HeaderColumn = ({ column }) => {
   const theme = useTheme()
   const isRadius = theme?.customization?.borderRadius > 16
 
+  const [openDialog, setOpenDialog] = useState(false)
+  const showDialog = () => setOpenDialog(!openDialog)
+
   const [anchorEl, setAnchorEl] = useState(null)
 
   const open = Boolean(anchorEl)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const [title, setTitle] = useState(column?.title)
+  const [description, setDescription] = useState(column?.description)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    if (name === 'title') setTitle(value)
+    if (name === 'description') setDescription(value)
   }
 
   const handleClose = () => {
@@ -34,8 +47,6 @@ const HeaderColumn = ({ column }) => {
 
   const handleDeleteColumn = async () => {
     try {
-
-
       await confirm({
         title: 'Are you sure to delete ' + column?.title + '?',
         description: 'This will delete all cards in ' + column?.title,
@@ -64,6 +75,34 @@ const HeaderColumn = ({ column }) => {
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const data = {
+      title: formData.get('title'),
+      description: formData.get('description')
+    }
+
+    if (data.title === '') return toast.error('Please enter column title')
+
+    try {
+      dispatch(updateColumn({ _id: column?._id, ...data })).then((result) => {
+        if (result.payload) {
+          toast.error(result.payload)
+          return
+        }
+        toast.success('Update column' + data.title + ' success')
+      }).catch((error) => {
+        toast.error('Update column failed' + error)
+      })
+
+      showDialog()
+    }
+    catch (error) {
+      toast.error(error)
+    }
+  }
+
   return (
     <Box sx={{
       display: 'flex',
@@ -74,7 +113,9 @@ const HeaderColumn = ({ column }) => {
       maxHeight:(theme) => theme.trello.columns.heightheader,
       minHeight:(theme) => theme.trello.columns.heightheader
     }}>
-      <Typography variant='h5' sx={{ fontSize:'1.4rem', fontWeight:'bold' }}>{column?.title}</Typography>
+      <Tooltip title={column?.description} placement="top">
+        <Typography variant='h5' sx={{ fontSize: '1.4rem', fontWeight: 'bold' }}>{column?.title}</Typography>
+      </Tooltip>
       <ArrowDropDown
         id="basic-column-dropdown"
         aria-controls={open ? 'basic-menu-dropdown' : undefined}
@@ -101,15 +142,58 @@ const HeaderColumn = ({ column }) => {
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       >
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={showDialog}>
             <ListItemIcon>
-              <EditIcon fontSize="small" />
+              <EditIcon fontSize="small" color="info" />
             </ListItemIcon>
             <Typography>Edit</Typography>
           </MenuItem>
-          <MenuItem onClick ={handleDeleteColumn}>
+          <Dialog
+            data-no-dnd
+            open={openDialog}
+            onClose={showDialog}
+            PaperProps={{
+              component: 'form',
+              onSubmit: handleSubmit
+            }}
+          >
+            <DialogTitle>Edit Column</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="title"
+                name="title"
+                label="Title"
+                type="text"
+                value={title}
+                fullWidth
+                variant="outlined"
+                onChange={handleChange}
+              />
+              <TextField
+                margin="dense"
+                id="description"
+                name="description"
+                label="Description"
+                type="text"
+                value={description}
+                rows={4}
+                multiline
+                fullWidth
+                variant="outlined"
+                onChange={handleChange}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={showDialog}>Cancel</Button>
+              <Button type="submit">Edit</Button>
+            </DialogActions>
+          </Dialog>
+          <MenuItem onClick={handleDeleteColumn}>
             <ListItemIcon>
-              <DeleteIcon fontSize="small" />
+              <DeleteIcon fontSize="small" color="warning" />
             </ListItemIcon>
             <Typography>Delete</Typography>
           </MenuItem>

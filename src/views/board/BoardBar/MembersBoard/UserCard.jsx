@@ -65,11 +65,11 @@ const UserCard = ({ user, type }) => {
         sx={{ borderRadius: `${customization.borderRadius}px` }}
         secondaryAction={type === 'add' ?
           <IconButton edge="end" aria-label="add" onClick={() => handleInviteMember(user)}>
-            <PersonAddIcon />
+            <PersonAddIcon color="primary" />
           </IconButton>
           :
           <IconButton edge="end" aria-label="delete" onClick={() => handleRemoveMember(user)}>
-            <PersonRemoveIcon />
+            <PersonRemoveIcon color="warning" />
           </IconButton>
         }
       >

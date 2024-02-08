@@ -11,7 +11,6 @@ import { useSortable } from '@dnd-kit/sortable'
 import { API_HOST } from '~/utils/constants'
 import { useDispatch } from 'react-redux'
 import { likeCard, favoriteCard, fileDownload } from '~/redux/board/boardSlice'
-import { useEffect } from 'react'
 
 const Card = ({ card, dragging }) => {
   const dispatch = useDispatch()
