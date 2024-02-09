@@ -3,7 +3,7 @@ const { JWT } = jose
 import { jwtDecode } from 'jwt-decode'
 
 export const generateToken = (user) => {
-  return JWT.sign(user, import.meta.env.SECRET_KEY, {
+  return JWT.sign(user, import.meta.env.VITE_SECRET_KEY, {
     expiresIn: '1d',
     algorithm: 'HS256'
   })
