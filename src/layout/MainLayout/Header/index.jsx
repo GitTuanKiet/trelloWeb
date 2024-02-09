@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -73,16 +74,20 @@ const Header = ({ handleLeftDrawerToggle }) => {
           <ProfileSection user={user} />
         </>
         : <>
-          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', p: 2 }} onClick={() => window.location.href = '/pages/login/login3'}>
-            <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
+          <Link to="/pages/login/login3">
+            <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', p: 2 }} >
+              <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
               Sign In
-            </Typography>
-          </ButtonBase>
-          <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', py: 2 }} onClick={() => window.location.href = '/pages/register/register3'}>
-            <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
+              </Typography>
+            </ButtonBase>
+          </Link>
+          <Link to="/pages/register/register3">
+            <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', py: 2 }} >
+              <Typography variant="h4" sx={{ color: theme.palette.primary.dark, fontWeight: 600, display: { xs: 'none', md: 'block' } }}>
               Sign Up
-            </Typography>
-          </ButtonBase>
+              </Typography>
+            </ButtonBase>
+          </Link>
         </>
       }
     </>

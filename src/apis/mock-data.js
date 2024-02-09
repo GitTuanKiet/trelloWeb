@@ -160,7 +160,7 @@ export const mockData = {
         boardId: 'default',
         title: 'Library',
         description: 'Description of library column',
-        cardOrderIds: ['card-id-010', 'card-id-011', 'card-id-012', 'card-id-013', 'card-id-014'],
+        cardOrderIds: ['card-id-010', 'card-id-012', 'card-id-013'],
         cards: [
           {
             _id: 'card-id-010',
@@ -173,18 +173,6 @@ export const mockData = {
             likes: ['test-user-id-01'],
             favorites: ['test comment 01', 'test comment 02'],
             downloads: 3
-          },
-          {
-            _id: 'card-id-011',
-            userId: 'tuankiet',
-            boardId: 'default',
-            columnId: 'library-column',
-            title: 'React-Vite',
-            description: 'Description of React-Vite card',
-            cover: '\\uploads\\cover_1707278742004_trello-ar21.svg',
-            likes: ['test-user-id-02'],
-            favorites: ['test comment 03', 'test comment 04'],
-            downloads: 7
           },
           {
             _id: 'card-id-012',
@@ -209,18 +197,6 @@ export const mockData = {
             likes: ['test-user-id-04'],
             favorites: ['test comment 07', 'test comment 08'],
             downloads: 3
-          },
-          {
-            _id: 'card-id-014',
-            userId: 'tuankiet',
-            boardId: 'default',
-            columnId: 'library-column',
-            title: 'Redux',
-            description: 'Description of Redux card',
-            cover: '\\uploads\\cover_1707278742004_trello-ar21.svg',
-            likes: ['test-user-id-05'],
-            favorites: ['test comment 09', 'test comment 10'],
-            downloads: 7
           }
         ]
       },
